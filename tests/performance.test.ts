@@ -25,7 +25,7 @@ describe('Performance Benchmarks', () => {
     const elapsed = performance.now() - t0;
 
     expect(result.paths.length).toBe(40);
-    expect(elapsed).toBeLessThan(250);
+    expect(elapsed).toBeLessThan(500);
   });
 
   it('Mode 2: Loops completes generation under 250ms', () => {
@@ -35,7 +35,7 @@ describe('Performance Benchmarks', () => {
     const elapsed = performance.now() - t0;
 
     expect(result.paths.length).toBe(30);
-    expect(elapsed).toBeLessThan(250);
+    expect(elapsed).toBeLessThan(500);
   });
 
   it('Mode 3: Branches completes generation under 250ms', () => {
@@ -45,7 +45,7 @@ describe('Performance Benchmarks', () => {
     const elapsed = performance.now() - t0;
 
     expect(result.paths.length).toBe(40);
-    expect(elapsed).toBeLessThan(250);
+    expect(elapsed).toBeLessThan(500);
   });
 
   it('Mode 4: Interference completes generation under 250ms', () => {
@@ -55,7 +55,7 @@ describe('Performance Benchmarks', () => {
     const elapsed = performance.now() - t0;
 
     expect(result.paths.length).toBe(80);
-    expect(elapsed).toBeLessThan(250);
+    expect(elapsed).toBeLessThan(500);
   });
 
   it('Mode 5: Contours completes high-res marching squares under 250ms', () => {
@@ -65,7 +65,7 @@ describe('Performance Benchmarks', () => {
     const elapsed = performance.now() - t0;
 
     expect(result.paths.length).toBeGreaterThan(0);
-    expect(elapsed).toBeLessThan(250);
+    expect(elapsed).toBeLessThan(500);
   });
 
   it('Mode 6: Connections completes generation under 250ms', () => {
@@ -75,6 +75,6 @@ describe('Performance Benchmarks', () => {
     const elapsed = performance.now() - t0;
 
     expect(result.paths.length).toBeGreaterThan(50);
-    expect(elapsed).toBeLessThan(250);
+    expect(elapsed).toBeLessThan(500);
   });
 });

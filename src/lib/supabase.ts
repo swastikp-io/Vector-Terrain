@@ -108,7 +108,10 @@ export async function signInWithEmail(email: string, password: string): Promise<
             aud: 'authenticated',
             created_at: rpcData.user.created_at || new Date().toISOString(),
             app_metadata: { provider: 'custom_table' },
-            user_metadata: { email: rpcData.user.email || cleanEmail },
+            user_metadata: {
+              email: rpcData.user.email || cleanEmail,
+              full_name: rpcData.user.full_name || '',
+            },
           } as User;
           localStorage.setItem('vp_custom_user', JSON.stringify(customUser));
           return { user: customUser, session: null, error: null };
@@ -126,7 +129,10 @@ export async function signInWithEmail(email: string, password: string): Promise<
           aud: 'authenticated',
           created_at: row.created_at || new Date().toISOString(),
           app_metadata: { provider: 'custom_table' },
-          user_metadata: { email: row.email || cleanEmail },
+          user_metadata: {
+            email: row.email || cleanEmail,
+            full_name: row.full_name || '',
+          },
         } as User;
         localStorage.setItem('vp_custom_user', JSON.stringify(customUser));
         return { user: customUser, session: null, error: null };
@@ -140,12 +146,17 @@ export async function signInWithEmail(email: string, password: string): Promise<
 }
 
 /**
- * Register new user with email and password.
+ * Register new user with email, password, and optional full name.
  * Uses ONLY the custom public.users table via `register_user` RPC.
  * Does NOT fall back to Supabase Auth to avoid ghost users in auth.users.
  */
-export async function signUpWithEmail(email: string, password: string): Promise<AuthResponse> {
+export async function signUpWithEmail(
+  email: string,
+  password: string,
+  fullName: string = ''
+): Promise<AuthResponse> {
   const cleanEmail = email.toLowerCase().trim();
+  const cleanFullName = fullName.trim();
 
   if (!isSupabaseConfigured) {
     // Simulated demo sign-up
@@ -153,7 +164,7 @@ export async function signUpWithEmail(email: string, password: string): Promise<
       const mockUser: User = {
         id: 'demo-user-id',
         app_metadata: { provider: 'demo' },
-        user_metadata: { email: cleanEmail },
+        user_metadata: { email: cleanEmail, full_name: cleanFullName },
         aud: 'authenticated',
         created_at: new Date().toISOString(),
         email: cleanEmail,
@@ -170,10 +181,21 @@ export async function signUpWithEmail(email: string, password: string): Promise<
 
   // --- Register via register_user RPC (public.users table only) ---
   try {
-    const { data: rpcData, error: rpcError } = await supabase.rpc('register_user', {
+    let { data: rpcData, error: rpcError } = await supabase.rpc('register_user', {
       user_email: cleanEmail,
       user_password: password,
+      user_full_name: cleanFullName,
     });
+
+    // Backwards compatibility fallback if database hasn't had user_full_name argument deployed yet
+    if (rpcError && (rpcError.message?.includes('user_full_name') || rpcError.code === 'PGRST202')) {
+      const fallback = await supabase.rpc('register_user', {
+        user_email: cleanEmail,
+        user_password: password,
+      });
+      rpcData = fallback.data;
+      rpcError = fallback.error;
+    }
 
     if (rpcError) {
       if (isRpcNotFoundError(rpcError)) {
@@ -196,7 +218,10 @@ export async function signUpWithEmail(email: string, password: string): Promise<
             aud: 'authenticated',
             created_at: rpcData.user.created_at || new Date().toISOString(),
             app_metadata: { provider: 'custom_table' },
-            user_metadata: { email: rpcData.user.email || cleanEmail },
+            user_metadata: {
+              email: rpcData.user.email || cleanEmail,
+              full_name: rpcData.user.full_name || cleanFullName,
+            },
           } as User;
           localStorage.setItem('vp_custom_user', JSON.stringify(customUser));
           return { user: customUser, session: null, error: null };
@@ -214,7 +239,10 @@ export async function signUpWithEmail(email: string, password: string): Promise<
           aud: 'authenticated',
           created_at: row.created_at || new Date().toISOString(),
           app_metadata: { provider: 'custom_table' },
-          user_metadata: { email: row.email || cleanEmail },
+          user_metadata: {
+            email: row.email || cleanEmail,
+            full_name: row.full_name || cleanFullName,
+          },
         } as User;
         localStorage.setItem('vp_custom_user', JSON.stringify(customUser));
         return { user: customUser, session: null, error: null };

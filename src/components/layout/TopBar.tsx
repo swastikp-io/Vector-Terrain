@@ -42,7 +42,7 @@ export const TopBar: React.FC<TopBarProps> = ({
   const canRedo = history.future.length > 0;
 
   return (
-    <header className="h-14 bg-white border-b border-[#d9d9d9] px-4 flex items-center justify-between text-black select-none z-30 flex-shrink-0">
+    <header className="h-14 bg-transparent border-none px-4 flex items-center justify-between text-black select-none z-30 flex-shrink-0">
       {/* Brand & App Title */}
       <div className="flex items-center">
         <span className="font-semibold text-sm tracking-tight text-black font-mono">
@@ -53,7 +53,7 @@ export const TopBar: React.FC<TopBarProps> = ({
       {/* Center Actions: Undo, Redo, Roll, Randomize, Animation */}
       <div className="flex items-center gap-1.5">
         {/* Undo / Redo */}
-        <div className="flex items-center bg-[#f5f5f5] border border-[#d9d9d9] rounded p-0.5">
+        <div className="flex items-center bg-[#f5f5f5] rounded p-0.5">
           <button
             onClick={undo}
             disabled={!canUndo}
@@ -76,7 +76,7 @@ export const TopBar: React.FC<TopBarProps> = ({
         <button
           onClick={rollSeed}
           title="Generate New Seed Variation"
-          className="flex items-center gap-1.5 bg-[#f5f5f5] hover:bg-[#eeeeee] border border-[#d9d9d9] rounded px-2.5 py-1 text-xs text-black transition"
+          className="flex items-center gap-1.5 bg-[#f5f5f5] hover:bg-[#eeeeee] rounded px-2.5 py-1 text-xs text-black transition"
         >
           <Dices size={13} className="text-[#555555]" />
           <span className="hidden sm:inline">New Variation</span>
@@ -86,16 +86,14 @@ export const TopBar: React.FC<TopBarProps> = ({
         <button
           onClick={randomizeAll}
           title="Randomize All Unlocked Parameters"
-          className="flex items-center gap-1.5 bg-[#f5f5f5] hover:bg-[#eeeeee] border border-[#d9d9d9] rounded px-2.5 py-1 text-xs text-black transition"
+          className="flex items-center gap-1.5 bg-[#f5f5f5] hover:bg-[#eeeeee] rounded px-2.5 py-1 text-xs text-black transition"
         >
           <Sparkles size={13} className="text-black" />
           <span className="hidden md:inline">Randomize</span>
         </button>
 
-        <div className="h-4 w-[1px] bg-[#d9d9d9] mx-1" />
-
         {/* Animation Play/Pause, Reset & Speed */}
-        <div className="flex items-center gap-1 bg-[#f5f5f5] border border-[#d9d9d9] rounded p-0.5">
+        <div className="flex items-center gap-1 bg-[#f5f5f5] rounded p-0.5">
           <button
             onClick={toggleAnimation}
             title={animation.isPlaying ? 'Pause Animation' : 'Play Motion Animation'}
@@ -133,23 +131,14 @@ export const TopBar: React.FC<TopBarProps> = ({
       {/* Right Actions: User Account + Export Buttons */}
       <div className="flex items-center gap-2">
         {user && onSignOut && (
-          <div className="flex items-center gap-2 border-r border-[#d9d9d9] pr-3 mr-1">
-            <span
-              className="font-mono text-[11px] text-[#666666] hidden md:inline max-w-[140px] truncate"
-              title={user.email || ''}
-            >
-              {user.email}
-            </span>
-            <button
-              onClick={onSignOut}
-              title="Sign Out of Procedural Studio"
-              className="px-2.5 py-1 bg-[#f5f5f5] hover:bg-[#eaeaea] border border-[#d9d9d9] hover:border-black text-black font-mono text-[11px] rounded transition"
-            >
-              Sign Out
-            </button>
-          </div>
+          <button
+            onClick={onSignOut}
+            title="Sign Out of Procedural Studio"
+            className="px-2.5 py-1 bg-[#f5f5f5] hover:bg-[#eaeaea] text-black font-mono text-[11px] rounded transition"
+          >
+            Sign Out
+          </button>
         )}
-
 
         <button
           onClick={() => onOpenExport('svg')}

@@ -70,8 +70,11 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="hidden sm:flex items-center gap-3">
           {user ? (
             <div className="flex items-center gap-3">
-              <span className="font-mono text-xs text-[#666666] max-w-[160px] truncate" title={user.email || ''}>
-                {user.email}
+              <span
+                className="font-mono text-xs text-[#666666] max-w-[160px] truncate"
+                title={user.user_metadata?.full_name ? `${user.user_metadata.full_name} (${user.email})` : (user.email || '')}
+              >
+                {user.user_metadata?.full_name || user.email}
               </span>
               <button
                 onClick={onSignOut}

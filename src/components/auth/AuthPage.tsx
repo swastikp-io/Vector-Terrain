@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ArrowUpRight, Lock, Mail, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, Lock, Mail, AlertCircle, CheckCircle2, User as UserIcon } from 'lucide-react';
 import { signInWithEmail, signUpWithEmail, isSupabaseConfigured } from '../../lib/supabase';
 import { User } from '@supabase/supabase-js';
 
@@ -17,6 +17,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
   onBack,
 }) => {
   const [mode, setMode] = useState<'login' | 'signup'>(initialMode);
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -36,6 +37,11 @@ export const AuthPage: React.FC<AuthPageProps> = ({
     setSuccessMessage(null);
 
     // Validation
+    if (mode === 'signup' && !fullName.trim()) {
+      setErrorMessage('Please enter your full name.');
+      return;
+    }
+
     if (!email || !email.includes('@')) {
       setErrorMessage('Please enter a valid email address.');
       return;
@@ -62,7 +68,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
           onSuccess(user);
         }
       } else {
-        const { user, error } = await signUpWithEmail(email, password);
+        const { user, error } = await signUpWithEmail(email, password, fullName.trim());
         if (error) {
           setErrorMessage(error);
         } else if (user) {
@@ -203,6 +209,25 @@ export const AuthPage: React.FC<AuthPageProps> = ({
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
+            {mode === 'signup' && (
+              <div>
+                <label className="block font-mono text-xs uppercase text-[#666666] mb-1.5">
+                  Full Name
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    required
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    placeholder="Swastik Patel"
+                    className="w-full bg-white border border-[#E5E5E5] focus:border-black focus:outline-none px-3.5 py-2.5 text-xs font-mono text-black placeholder:text-[#AAAAAA] transition-colors"
+                  />
+                  <UserIcon size={14} className="absolute right-3.5 top-3 text-[#AAAAAA] pointer-events-none" />
+                </div>
+              </div>
+            )}
+
             <div>
               <label className="block font-mono text-xs uppercase text-[#666666] mb-1.5">
                 Email Address

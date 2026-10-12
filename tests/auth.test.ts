@@ -63,6 +63,21 @@ describe('Authentication & Access Control', () => {
     expect(storedUser?.email).toBe('studio@generative.art');
   });
 
+  it('correctly reads custom user full name from user_metadata', () => {
+    const mockUser = {
+      id: 'usr_swastik',
+      email: 'swastik@domain.com',
+      aud: 'authenticated',
+      app_metadata: { provider: 'custom_table' },
+      user_metadata: { email: 'swastik@domain.com', full_name: 'Swastik Patel' },
+    };
+    localStorage.setItem('vp_custom_user', JSON.stringify(mockUser));
+
+    const storedUser = getStoredUserSync();
+    expect(storedUser).not.toBeNull();
+    expect(storedUser?.user_metadata?.full_name).toBe('Swastik Patel');
+  });
+
   it('returns appropriate error on invalid credentials without crashing', async () => {
     const result = await signInWithEmail('nonexistent@user.com', 'short');
     expect(result.user).toBeNull();

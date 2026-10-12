@@ -11,9 +11,13 @@ CREATE TABLE IF NOT EXISTS public.users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   email TEXT UNIQUE NOT NULL,
   password_hash TEXT NOT NULL,
+  full_name TEXT DEFAULT '',
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- Ensure full_name column exists if public.users was already created earlier
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS full_name TEXT DEFAULT '';
 
 -- Index on lowercase email for fast query lookups
 CREATE INDEX IF NOT EXISTS idx_users_email ON public.users (LOWER(email));
@@ -21,17 +25,17 @@ CREATE INDEX IF NOT EXISTS idx_users_email ON public.users (LOWER(email));
 -- 3. Enable Row Level Security (RLS)
 ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
 
--- 4. Clean up any previous function signatures to avoid return type conflicts
+-- 4. Clean up any previous function signatures to avoid parameter conflicts
 DROP FUNCTION IF EXISTS public.register_user(TEXT, TEXT);
 DROP FUNCTION IF EXISTS public.register_user(TEXT, TEXT, TEXT);
 DROP FUNCTION IF EXISTS public.login_user(TEXT, TEXT);
 DROP FUNCTION IF EXISTS public.login_user(TEXT, TEXT, TEXT);
 
--- 5. Secure RPC function for User Registration
--- Returns JSONB with HTTP 200 so invalid inputs don't dump red 400 errors in browser console
+-- 5. Secure RPC function for User Registration with full_name
 CREATE OR REPLACE FUNCTION public.register_user(
   user_email TEXT,
-  user_password TEXT
+  user_password TEXT,
+  user_full_name TEXT DEFAULT ''
 )
 RETURNS JSONB
 LANGUAGE plpgsql
@@ -42,8 +46,10 @@ DECLARE
   v_new_id UUID;
   v_created_at TIMESTAMPTZ;
   v_clean_email TEXT;
+  v_clean_name TEXT;
 BEGIN
   v_clean_email := LOWER(TRIM(user_email));
+  v_clean_name := COALESCE(TRIM(user_full_name), '');
 
   -- Validation
   IF v_clean_email IS NULL OR v_clean_email = '' OR POSITION('@' IN v_clean_email) = 0 THEN
@@ -59,9 +65,9 @@ BEGIN
     RETURN jsonb_build_object('success', false, 'error', 'An account with this email already exists. Please log in.');
   END IF;
 
-  -- Insert user with salted bcrypt hash
-  INSERT INTO public.users (email, password_hash)
-  VALUES (v_clean_email, crypt(user_password, gen_salt('bf', 10)))
+  -- Insert user with salted bcrypt hash and full name
+  INSERT INTO public.users (email, password_hash, full_name)
+  VALUES (v_clean_email, crypt(user_password, gen_salt('bf', 10)), v_clean_name)
   RETURNING id, created_at INTO v_new_id, v_created_at;
 
   RETURN jsonb_build_object(
@@ -69,14 +75,14 @@ BEGIN
     'user', jsonb_build_object(
       'id', v_new_id,
       'email', v_clean_email,
+      'full_name', v_clean_name,
       'created_at', v_created_at
     )
   );
 END;
 $$;
 
--- 6. Secure RPC function for User Login
--- Returns JSONB with HTTP 200 on both success and invalid credentials (no 400 Bad Request error)
+-- 6. Secure RPC function for User Login returning full_name
 CREATE OR REPLACE FUNCTION public.login_user(
   user_email TEXT,
   user_password TEXT
@@ -93,7 +99,7 @@ BEGIN
   v_clean_email := LOWER(TRIM(user_email));
 
   -- Look up user by lowercase email
-  SELECT id, email, password_hash, created_at INTO v_user
+  SELECT id, email, password_hash, COALESCE(full_name, '') AS full_name, created_at INTO v_user
   FROM public.users
   WHERE LOWER(TRIM(email)) = v_clean_email;
 
@@ -108,6 +114,7 @@ BEGIN
       'user', jsonb_build_object(
         'id', v_user.id,
         'email', v_user.email,
+        'full_name', v_user.full_name,
         'created_at', v_user.created_at
       )
     );
@@ -119,5 +126,5 @@ $$;
 
 -- 7. Grant API execution permissions to anon and authenticated roles
 GRANT USAGE ON SCHEMA public TO anon, authenticated;
-GRANT EXECUTE ON FUNCTION public.register_user(TEXT, TEXT) TO anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.register_user(TEXT, TEXT, TEXT) TO anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.login_user(TEXT, TEXT) TO anon, authenticated;
