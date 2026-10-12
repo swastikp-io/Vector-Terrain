@@ -9,14 +9,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenPlayground }) =>
   return (
     <section className="relative w-full bg-white text-black pt-12 sm:pt-20 pb-20 sm:pb-28 border-b border-[#E5E5E5] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Top technical label */}
-        <div className="flex items-center gap-3 mb-10 sm:mb-14">
-          <span className="text-[10px] sm:text-xs font-mono tracking-widest text-[#666666] uppercase">
-            EXPERIMENTAL GRAPHICS SYSTEMS <span className="text-[#888888]">/</span> 001
-          </span>
-          <div className="h-[1px] flex-1 bg-[#E5E5E5] max-w-[120px]" />
-        </div>
-
         {/* Hero Editorial Composition with Generous Negative Space */}
         <div className="max-w-4xl">
           {/* Oversized Lightweight Typography */}
@@ -36,7 +28,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenPlayground }) =>
           </p>
 
           {/* Action Buttons */}
-          <div className="flex flex-wrap items-center gap-4 mb-16">
+          <div className="flex flex-wrap items-center gap-4">
             <button
               onClick={onOpenPlayground}
               className="group flex items-center gap-2.5 px-7 py-4 bg-black hover:bg-neutral-800 text-white font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider transition-all duration-150 active:scale-95 shadow-sm"
@@ -55,24 +47,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenPlayground }) =>
               <span>EXPLORE THE SYSTEMS</span>
               <ArrowDown size={14} className="text-[#666666]" />
             </a>
-          </div>
-
-          {/* Compact Metadata Row */}
-          <div className="pt-8 border-t border-[#E5E5E5] flex flex-wrap items-center gap-4 sm:gap-8 text-[10px] font-mono tracking-widest text-[#666666] uppercase">
-            <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-black" />
-              <span>GENERATIVE ART</span>
-            </div>
-            <span className="text-[#E5E5E5]">•</span>
-            <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-black" />
-              <span>REAL-TIME SYSTEMS</span>
-            </div>
-            <span className="text-[#E5E5E5]">•</span>
-            <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-black" />
-              <span>VECTOR OUTPUT</span>
-            </div>
           </div>
         </div>
       </div>

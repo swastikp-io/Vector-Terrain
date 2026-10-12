@@ -18,7 +18,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPlayground }) => {
                 <div className="w-2 h-2 bg-white rotate-45" />
               </div>
               <span className="font-mono text-xs font-semibold tracking-wider text-white uppercase">
-                VECTOR <span className="text-[#666666] font-normal">/</span> TERRAIN
+                VECTOR TERRAIN
               </span>
             </div>
             <p className="font-mono text-xs text-[#A0A0A0] max-w-sm leading-relaxed mb-6">
