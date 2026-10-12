@@ -32,7 +32,7 @@ export const PRESETS: PresetItem[] = [
     mode: 'waveforms',
     description: 'Parallel flowing curves with central braid convergence and harmonic swell.',
     seed: 1042,
-    paletteId: 'monochrome-light',
+    paletteId: 'monochrome-dark',
     dimensions: DEFAULT_DIMENSIONS,
     config: {
       ...DEFAULT_WAVEFORMS,
@@ -70,7 +70,7 @@ export const PRESETS: PresetItem[] = [
     mode: 'waveforms',
     description: 'High-density micro-ripples creating rapid optical vibration.',
     seed: 554,
-    paletteId: 'monochrome-light',
+    paletteId: 'monochrome-dark',
     dimensions: DEFAULT_DIMENSIONS,
     config: {
       ...DEFAULT_WAVEFORMS,
@@ -92,7 +92,7 @@ export const PRESETS: PresetItem[] = [
     mode: 'loops',
     description: 'Harmonious repeating elliptical paths with alternating axial symmetry.',
     seed: 2048,
-    paletteId: 'monochrome-light',
+    paletteId: 'monochrome-dark',
     dimensions: DEFAULT_DIMENSIONS,
     config: {
       ...DEFAULT_LOOPS,
@@ -132,7 +132,7 @@ export const PRESETS: PresetItem[] = [
     mode: 'loops',
     description: 'Dense overlapping loop geometry forming an elongated floral spindle.',
     seed: 3912,
-    paletteId: 'monochrome-light',
+    paletteId: 'monochrome-dark',
     dimensions: DEFAULT_DIMENSIONS,
     config: {
       ...DEFAULT_LOOPS,
@@ -155,7 +155,7 @@ export const PRESETS: PresetItem[] = [
     mode: 'branches',
     description: 'Twin trunks smoothly fan out into wide deltas and reconverge.',
     seed: 4401,
-    paletteId: 'monochrome-light',
+    paletteId: 'monochrome-dark',
     dimensions: DEFAULT_DIMENSIONS,
     config: {
       ...DEFAULT_BRANCHES,
@@ -194,7 +194,7 @@ export const PRESETS: PresetItem[] = [
     mode: 'branches',
     description: 'Minimal single trunk branching into wide parallel tributaries.',
     seed: 9283,
-    paletteId: 'monochrome-light',
+    paletteId: 'monochrome-dark',
     dimensions: DEFAULT_DIMENSIONS,
     config: {
       ...DEFAULT_BRANCHES,
@@ -216,7 +216,7 @@ export const PRESETS: PresetItem[] = [
     mode: 'interference',
     description: '4-fold rotational symmetry with harmonic phase echoes.',
     seed: 331,
-    paletteId: 'monochrome-light',
+    paletteId: 'monochrome-dark',
     dimensions: DEFAULT_DIMENSIONS,
     config: {
       ...DEFAULT_INTERFERENCE,
@@ -254,7 +254,7 @@ export const PRESETS: PresetItem[] = [
     mode: 'interference',
     description: '3-fold rotational spiral with intentional focal intersection points.',
     seed: 1204,
-    paletteId: 'monochrome-light',
+    paletteId: 'monochrome-dark',
     dimensions: DEFAULT_DIMENSIONS,
     config: {
       ...DEFAULT_INTERFERENCE,
@@ -275,7 +275,7 @@ export const PRESETS: PresetItem[] = [
     mode: 'contours',
     description: 'Pure vector isocontour strata extracted from scalar Perlin noise.',
     seed: 6632,
-    paletteId: 'monochrome-light',
+    paletteId: 'monochrome-dark',
     dimensions: DEFAULT_DIMENSIONS,
     config: {
       ...DEFAULT_CONTOURS,
@@ -314,7 +314,7 @@ export const PRESETS: PresetItem[] = [
     mode: 'contours',
     description: 'Multi-layer organic geological islands and winding valleys.',
     seed: 4529,
-    paletteId: 'monochrome-light',
+    paletteId: 'monochrome-dark',
     dimensions: DEFAULT_DIMENSIONS,
     config: {
       ...DEFAULT_CONTOURS,
@@ -334,7 +334,7 @@ export const PRESETS: PresetItem[] = [
     mode: 'connections',
     description: 'Layered network bus with curved cubic Bézier traces and telemetry terminals.',
     seed: 1102,
-    paletteId: 'monochrome-light',
+    paletteId: 'monochrome-dark',
     dimensions: DEFAULT_DIMENSIONS,
     config: {
       ...DEFAULT_CONNECTIONS,
@@ -372,7 +372,7 @@ export const PRESETS: PresetItem[] = [
     mode: 'connections',
     description: 'Organic high-density network with technical terminal markers.',
     seed: 7309,
-    paletteId: 'monochrome-light',
+    paletteId: 'monochrome-dark',
     dimensions: DEFAULT_DIMENSIONS,
     config: {
       ...DEFAULT_CONNECTIONS,

@@ -357,7 +357,7 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col w-screen h-screen overflow-hidden bg-white text-black font-sans antialiased">
+    <div className="flex flex-col w-screen h-screen overflow-hidden bg-[#0c0d0e] text-white font-sans antialiased dark">
       {/* Top Application Bar with Back to Home button and User Profile */}
       <TopBar
         onOpenExport={handleOpenExport}

@@ -6,12 +6,12 @@ import { DEFAULT_DIMENSIONS } from '../src/store/defaults';
 import { GeneratorMode } from '../src/engine/core/types';
 
 describe('Regression & Optimization Tests', () => {
-  it('default palette is monochrome-light with white background and black stroke', () => {
+  it('default palette is monochrome-dark with dark background and white stroke', () => {
     const store = usePlaygroundStore.getState();
     const defaultPalette = getPaletteById(store.paletteId);
-    expect(defaultPalette.id).toBe('monochrome-light');
-    expect(defaultPalette.background).toBe('#ffffff');
-    expect(defaultPalette.primary).toBe('#000000');
+    expect(defaultPalette.id).toBe('monochrome-dark');
+    expect(defaultPalette.background).toBe('#0c0d0e');
+    expect(defaultPalette.primary).toBe('#ffffff');
   });
 
   it('switching generator modes smoothly isolates configurations and resets animation', () => {

@@ -124,15 +124,15 @@ export const ExportModal: React.FC<ExportModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm select-none animate-in fade-in duration-150">
-      <div className="w-full max-w-[620px] bg-white border border-[#E5E5E5] rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.12)] overflow-hidden text-black animate-in zoom-in-95 duration-150 flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm select-none animate-in fade-in duration-150">
+      <div className="w-full max-w-[620px] bg-[#0c0d0e] border border-[#27282d] rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.85)] overflow-hidden text-white animate-in zoom-in-95 duration-150 flex flex-col">
         {/* Header */}
         <div className="px-6 pt-6 pb-0 flex items-start justify-between">
           <div>
-            <h2 className="text-sm font-bold text-black tracking-widest font-mono uppercase">
+            <h2 className="text-sm font-bold text-white tracking-widest font-mono uppercase">
               EXPORT ARTWORK & MOTION
             </h2>
-            <p className="text-xs text-[#737373] mt-1">
+            <p className="text-xs text-[#8e919a] mt-1">
               Download vector geometry, high-res bitmaps, or animated graphics up to 15s.
             </p>
           </div>
@@ -141,7 +141,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
               if (isExporting) handleCancelExport();
               onClose();
             }}
-            className="p-1 hover:bg-[#F5F5F5] text-[#888888] hover:text-black rounded-md transition"
+            className="p-1 hover:bg-[#18191c] text-[#8e919a] hover:text-white rounded-md transition"
             title="Close"
           >
             <X size={17} />
@@ -149,13 +149,13 @@ export const ExportModal: React.FC<ExportModalProps> = ({
         </div>
 
         {/* Subtle Hairline Divider */}
-        <div className="border-b border-[#F0F0F0] mt-4 mb-4 mx-6" />
+        <div className="border-b border-[#222326] mt-4 mb-4 mx-6" />
 
         {/* Content Body */}
         <div className="px-6 space-y-5 overflow-y-auto max-h-[calc(90vh-140px)]">
           {/* FORMAT SELECTION */}
           <div>
-            <label className="text-[10px] font-mono tracking-widest uppercase text-[#737373] block mb-2.5">
+            <label className="text-[10px] font-mono tracking-widest uppercase text-[#8e919a] block mb-2.5">
               FORMAT SELECTION
             </label>
             <div className="grid grid-cols-4 gap-2.5">
@@ -165,8 +165,8 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                 onClick={() => setFormat('svg')}
                 className={`p-3.5 rounded-lg border text-left flex flex-col items-start gap-1 transition cursor-pointer ${
                   format === 'svg'
-                    ? 'bg-black text-white border-black shadow-sm'
-                    : 'bg-white text-black border-[#E5E5E5] hover:border-black'
+                    ? 'bg-white text-black border-white shadow-sm'
+                    : 'bg-[#121316] text-[#e4e4e7] border-[#27282d] hover:border-[#3f3f46]'
                 }`}
               >
                 {/* Vector Document Icon */}
@@ -179,7 +179,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                   strokeWidth="1.75"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className={format === 'svg' ? 'text-white' : 'text-black'}
+                  className={format === 'svg' ? 'text-black' : 'text-white'}
                 >
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                   <polyline points="14 2 14 8 20 8" />
@@ -190,7 +190,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                 <span className="text-xs font-semibold mt-2">SVG</span>
                 <span
                   className={`text-[10px] leading-tight ${
-                    format === 'svg' ? 'text-[#A3A3A3]' : 'text-[#737373]'
+                    format === 'svg' ? 'text-neutral-600' : 'text-[#8e919a]'
                   }`}
                 >
                   Lossless vector
@@ -203,8 +203,8 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                 onClick={() => setFormat('png')}
                 className={`p-3.5 rounded-lg border text-left flex flex-col items-start gap-1 transition cursor-pointer ${
                   format === 'png'
-                    ? 'bg-black text-white border-black shadow-sm'
-                    : 'bg-white text-black border-[#E5E5E5] hover:border-black'
+                    ? 'bg-white text-black border-white shadow-sm'
+                    : 'bg-[#121316] text-[#e4e4e7] border-[#27282d] hover:border-[#3f3f46]'
                 }`}
               >
                 {/* Image Icon */}
@@ -217,7 +217,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                   strokeWidth="1.75"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className={format === 'png' ? 'text-white' : 'text-black'}
+                  className={format === 'png' ? 'text-black' : 'text-white'}
                 >
                   <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
                   <circle cx="8.5" cy="8.5" r="1.5" />
@@ -226,7 +226,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                 <span className="text-xs font-semibold mt-2">PNG</span>
                 <span
                   className={`text-[10px] leading-tight ${
-                    format === 'png' ? 'text-[#A3A3A3]' : 'text-[#737373]'
+                    format === 'png' ? 'text-neutral-600' : 'text-[#8e919a]'
                   }`}
                 >
                   Raster image
@@ -239,8 +239,8 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                 onClick={() => setFormat('pdf')}
                 className={`p-3.5 rounded-lg border text-left flex flex-col items-start gap-1 transition cursor-pointer ${
                   format === 'pdf'
-                    ? 'bg-black text-white border-black shadow-sm'
-                    : 'bg-white text-black border-[#E5E5E5] hover:border-black'
+                    ? 'bg-white text-black border-white shadow-sm'
+                    : 'bg-[#121316] text-[#e4e4e7] border-[#27282d] hover:border-[#3f3f46]'
                 }`}
               >
                 {/* Print Document Icon */}
@@ -253,7 +253,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                   strokeWidth="1.75"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className={format === 'pdf' ? 'text-white' : 'text-black'}
+                  className={format === 'pdf' ? 'text-black' : 'text-white'}
                 >
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                   <polyline points="14 2 14 8 20 8" />
@@ -264,7 +264,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                 <span className="text-xs font-semibold mt-2">PDF</span>
                 <span
                   className={`text-[10px] leading-tight ${
-                    format === 'pdf' ? 'text-[#A3A3A3]' : 'text-[#737373]'
+                    format === 'pdf' ? 'text-neutral-600' : 'text-[#8e919a]'
                   }`}
                 >
                   Print document
@@ -277,8 +277,8 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                 onClick={handleSelectAnimated}
                 className={`p-3.5 rounded-lg border text-left flex flex-col items-start gap-1 transition cursor-pointer ${
                   isAnimated
-                    ? 'bg-black text-white border-black shadow-sm'
-                    : 'bg-white text-black border-[#E5E5E5] hover:border-black'
+                    ? 'bg-white text-black border-white shadow-sm'
+                    : 'bg-[#121316] text-[#e4e4e7] border-[#27282d] hover:border-[#3f3f46]'
                 }`}
               >
                 {/* Film Reels Icon */}
@@ -291,7 +291,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                   strokeWidth="1.75"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className={isAnimated ? 'text-white' : 'text-black'}
+                  className={isAnimated ? 'text-black' : 'text-white'}
                 >
                   <rect x="2" y="4" width="20" height="16" rx="2.5" />
                   <line x1="2" y1="8" x2="22" y2="8" />
@@ -304,7 +304,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                 <span className="text-xs font-semibold mt-2">ANIMATED</span>
                 <span
                   className={`text-[10px] leading-tight ${
-                    isAnimated ? 'text-[#A3A3A3]' : 'text-[#737373]'
+                    isAnimated ? 'text-neutral-600' : 'text-[#8e919a]'
                   }`}
                 >
                   Video up to 15s
@@ -316,10 +316,10 @@ export const ExportModal: React.FC<ExportModalProps> = ({
           {/* OUTPUT RESOLUTION */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="text-[10px] font-mono tracking-widest uppercase text-[#737373]">
+              <label className="text-[10px] font-mono tracking-widest uppercase text-[#8e919a]">
                 OUTPUT RESOLUTION
               </label>
-              <span className="text-[11px] font-mono text-[#737373]">
+              <span className="text-[11px] font-mono text-[#8e919a]">
                 {outputWidth} × {outputHeight} px
               </span>
             </div>
@@ -336,8 +336,8 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                   onClick={() => setScale(s)}
                   className={`py-2 rounded-lg border text-xs font-medium text-center transition cursor-pointer ${
                     scale === s
-                      ? 'bg-black text-white border-black font-semibold'
-                      : 'bg-white text-black border-[#E5E5E5] hover:border-black'
+                      ? 'bg-white text-black border-white font-semibold'
+                      : 'bg-[#121316] text-[#e4e4e7] border-[#27282d] hover:border-white'
                   }`}
                 >
                   {label}
@@ -348,15 +348,15 @@ export const ExportModal: React.FC<ExportModalProps> = ({
 
           {/* ANIMATED VIDEO DURATION & ENCODING PANEL (Revealed when Animated is chosen) */}
           {isAnimated && (
-            <div className="p-3.5 rounded-lg border border-[#E5E5E5] bg-[#FAFAFA] space-y-3 animate-in fade-in duration-100">
+            <div className="p-3.5 rounded-lg border border-[#27282d] bg-[#121316] space-y-3 animate-in fade-in duration-100">
               {/* Duration Slider & Presets */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1.5 text-xs font-medium text-black">
-                    <Clock size={12} className="text-neutral-700" />
+                  <div className="flex items-center gap-1.5 text-xs font-medium text-white">
+                    <Clock size={12} className="text-[#8e919a]" />
                     <span>Duration: {durationSec.toFixed(1)}s</span>
                   </div>
-                  <span className="text-[10px] font-mono text-[#737373]">
+                  <span className="text-[10px] font-mono text-[#8e919a]">
                     {Math.round(durationSec * fps)} frames @ {fps} FPS
                   </span>
                 </div>
@@ -369,11 +369,11 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                   value={durationSec}
                   onChange={(e) => setDurationSec(parseFloat(e.target.value))}
                   disabled={isExporting}
-                  className="w-full cursor-pointer accent-black"
+                  className="w-full cursor-pointer accent-white"
                 />
 
                 <div className="flex items-center gap-1.5 pt-0.5">
-                  <span className="text-[10px] font-mono text-[#737373] mr-1">Presets:</span>
+                  <span className="text-[10px] font-mono text-[#8e919a] mr-1">Presets:</span>
                   {[3, 5, 10, 15].map((d) => (
                     <button
                       key={d}
@@ -382,8 +382,8 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                       onClick={() => setDurationSec(d)}
                       className={`px-2 py-0.5 rounded text-[10px] font-mono transition border cursor-pointer ${
                         durationSec === d
-                          ? 'border-black bg-black text-white font-semibold'
-                          : 'border-[#E5E5E5] hover:border-black bg-white text-black'
+                          ? 'border-white bg-white text-black font-semibold'
+                          : 'border-[#27282d] hover:border-[#3f3f46] bg-[#18191c] text-[#e4e4e7]'
                       }`}
                     >
                       {d}s
@@ -393,9 +393,9 @@ export const ExportModal: React.FC<ExportModalProps> = ({
               </div>
 
               {/* Framerate & Container Format */}
-              <div className="grid grid-cols-2 gap-3 pt-2 border-t border-[#EAEAEA]">
+              <div className="grid grid-cols-2 gap-3 pt-2 border-t border-[#222326]">
                 <div className="space-y-1">
-                  <label className="text-[10px] font-mono uppercase tracking-wider text-[#737373] block">
+                  <label className="text-[10px] font-mono uppercase tracking-wider text-[#8e919a] block">
                     Frame Rate
                   </label>
                   <div className="grid grid-cols-2 gap-1.5 text-xs font-mono">
@@ -407,8 +407,8 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                         onClick={() => setFps(rate)}
                         className={`py-1 rounded-md border text-center transition cursor-pointer ${
                           fps === rate
-                            ? 'border-black bg-black text-white font-medium'
-                            : 'border-[#E5E5E5] hover:border-black bg-white text-black'
+                            ? 'border-white bg-white text-black font-medium'
+                            : 'border-[#27282d] hover:border-[#3f3f46] bg-[#18191c] text-[#e4e4e7]'
                         }`}
                       >
                         {rate} FPS
@@ -418,7 +418,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] font-mono uppercase tracking-wider text-[#737373] block">
+                  <label className="text-[10px] font-mono uppercase tracking-wider text-[#8e919a] block">
                     Format
                   </label>
                   <div className="grid grid-cols-2 gap-1.5 text-xs font-mono">
@@ -431,8 +431,8 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                       }}
                       className={`py-1 rounded-md border text-center transition cursor-pointer ${
                         videoContainer === 'webm'
-                          ? 'border-black bg-black text-white font-medium'
-                          : 'border-[#E5E5E5] hover:border-black bg-white text-black'
+                          ? 'border-white bg-white text-black font-medium'
+                          : 'border-[#27282d] hover:border-[#3f3f46] bg-[#18191c] text-[#e4e4e7]'
                       }`}
                     >
                       WebM
@@ -447,8 +447,8 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                       title={supportedFormats.mp4 ? 'Universal MP4' : 'MP4 not supported in browser'}
                       className={`py-1 rounded-md border text-center transition cursor-pointer ${
                         videoContainer === 'mp4'
-                          ? 'border-black bg-black text-white font-medium'
-                          : 'border-[#E5E5E5] hover:border-black bg-white text-black disabled:opacity-40 disabled:cursor-not-allowed'
+                          ? 'border-white bg-white text-black font-medium'
+                          : 'border-[#27282d] hover:border-[#3f3f46] bg-[#18191c] text-[#e4e4e7] disabled:opacity-40 disabled:cursor-not-allowed'
                       }`}
                     >
                       MP4
@@ -462,10 +462,10 @@ export const ExportModal: React.FC<ExportModalProps> = ({
           {/* Transparent Background Toggle */}
           <div className="flex items-center justify-between py-1">
             <div>
-              <div className="text-xs font-medium text-black">
+              <div className="text-xs font-medium text-white">
                 Transparent Background
               </div>
-              <div className="text-[11px] text-[#737373] mt-0.5">
+              <div className="text-[11px] text-[#8e919a] mt-0.5">
                 Omit artboard background fill in exported document
               </div>
             </div>
@@ -475,12 +475,12 @@ export const ExportModal: React.FC<ExportModalProps> = ({
               disabled={isExporting}
               onClick={() => setTransparent(!transparent)}
               className={`w-11 h-6 rounded-full transition-colors relative cursor-pointer flex-shrink-0 ${
-                transparent ? 'bg-black' : 'bg-[#E5E5E5]'
+                transparent ? 'bg-white' : 'bg-[#27282d]'
               }`}
             >
               <div
-                className={`w-5 h-5 rounded-full bg-white shadow-sm transition-transform absolute top-0.5 ${
-                  transparent ? 'left-[22px]' : 'left-0.5'
+                className={`w-5 h-5 rounded-full transition-transform absolute top-0.5 ${
+                  transparent ? 'left-[22px] bg-black shadow-sm' : 'left-0.5 bg-[#8e919a]'
                 }`}
               />
             </button>
@@ -488,18 +488,18 @@ export const ExportModal: React.FC<ExportModalProps> = ({
 
           {/* FILENAME */}
           <div>
-            <label className="text-[10px] font-mono tracking-widest uppercase text-[#737373] block mb-1.5">
+            <label className="text-[10px] font-mono tracking-widest uppercase text-[#8e919a] block mb-1.5">
               FILENAME
             </label>
-            <div className="border border-[#E5E5E5] rounded-lg bg-white flex items-center px-3.5 py-2 text-xs focus-within:border-black transition">
+            <div className="border border-[#27282d] rounded-lg bg-[#121316] flex items-center px-3.5 py-2 text-xs focus-within:border-white transition">
               <input
                 type="text"
                 disabled={isExporting}
                 value={filename}
                 onChange={(e) => setFilename(e.target.value)}
-                className="bg-transparent flex-1 text-xs font-mono text-black outline-none"
+                className="bg-transparent flex-1 text-xs font-mono text-white outline-none"
               />
-              <span className="border-l border-[#E5E5E5] pl-3 ml-2 text-xs font-mono text-[#737373] select-none">
+              <span className="border-l border-[#27282d] pl-3 ml-2 text-xs font-mono text-[#8e919a] select-none">
                 .{isAnimated ? videoContainer : format}
               </span>
             </div>
@@ -507,25 +507,25 @@ export const ExportModal: React.FC<ExportModalProps> = ({
 
           {/* Active Encoding Progress Bar */}
           {isExporting && isAnimated && progress && (
-            <div className="space-y-2 p-3.5 rounded-lg bg-[#FAFAFA] border border-[#E5E5E5] animate-in fade-in">
+            <div className="space-y-2 p-3.5 rounded-lg bg-[#121316] border border-[#27282d] animate-in fade-in">
               <div className="flex items-center justify-between text-xs font-mono">
-                <span className="font-semibold text-black flex items-center gap-1.5">
-                  <Loader2 size={13} className="animate-spin text-black" />
+                <span className="font-semibold text-white flex items-center gap-1.5">
+                  <Loader2 size={13} className="animate-spin text-white" />
                   Encoding Frame {progress.currentFrame} of {progress.totalFrames}
                 </span>
-                <span className="font-bold text-black text-sm">
+                <span className="font-bold text-white text-sm">
                   {progress.percentage}%
                 </span>
               </div>
 
-              <div className="w-full h-1.5 rounded-full bg-[#E5E5E5] overflow-hidden">
+              <div className="w-full h-1.5 rounded-full bg-[#27282d] overflow-hidden">
                 <div
-                  className="h-full bg-black transition-all duration-75 ease-out"
+                  className="h-full bg-white transition-all duration-75 ease-out"
                   style={{ width: `${progress.percentage}%` }}
                 />
               </div>
 
-              <div className="flex items-center justify-between text-[11px] font-mono text-[#737373]">
+              <div className="flex items-center justify-between text-[11px] font-mono text-[#8e919a]">
                 <span>Elapsed: {progress.elapsedSec.toFixed(1)}s</span>
                 <span>Est. Remaining: ~{progress.remainingSec.toFixed(1)}s</span>
               </div>
@@ -534,7 +534,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
 
           {/* Error Message */}
           {errorMsg && (
-            <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
+            <div className="p-3 rounded-lg bg-red-950/40 border border-red-800 text-red-300 text-xs flex items-center gap-2">
               <AlertCircle size={14} className="flex-shrink-0" />
               <span>{errorMsg}</span>
             </div>
@@ -542,12 +542,12 @@ export const ExportModal: React.FC<ExportModalProps> = ({
         </div>
 
         {/* Footer Actions */}
-        <div className="border-t border-[#EAEAEA] mt-6 pt-4 px-6 pb-5 flex items-center justify-between bg-white">
+        <div className="border-t border-[#222326] mt-6 pt-4 px-6 pb-5 flex items-center justify-between bg-[#0c0d0e]">
           {isExporting ? (
             <button
               type="button"
               onClick={handleCancelExport}
-              className="flex items-center gap-1.5 py-2 text-xs text-red-600 hover:text-red-700 font-mono transition cursor-pointer"
+              className="flex items-center gap-1.5 py-2 text-xs text-red-400 hover:text-red-300 font-mono transition cursor-pointer"
             >
               <StopCircle size={14} />
               <span>Cancel Encoding</span>
@@ -556,7 +556,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="text-xs font-medium text-black hover:text-[#555555] transition py-2 cursor-pointer"
+              className="text-xs font-medium text-[#8e919a] hover:text-white transition py-2 cursor-pointer"
             >
               Cancel
             </button>
@@ -568,13 +568,13 @@ export const ExportModal: React.FC<ExportModalProps> = ({
             disabled={isExporting}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-medium transition cursor-pointer active:scale-95 shadow-sm ${
               exportSuccess
-                ? 'bg-black text-white font-semibold'
-                : 'bg-black hover:bg-neutral-800 text-white font-semibold'
+                ? 'bg-white text-black font-semibold'
+                : 'bg-white hover:bg-neutral-200 text-black font-semibold'
             }`}
           >
             {isExporting ? (
               <>
-                <Loader2 size={14} className="animate-spin" />
+                <Loader2 size={14} className="animate-spin text-black" />
                 <span>Encoding {isAnimated ? `${progress?.percentage || 0}%` : '...'}</span>
               </>
             ) : exportSuccess ? (

@@ -110,7 +110,7 @@ export const usePlaygroundStore = create<PlaygroundState>((set, get) => ({
     connections: { ...DEFAULT_CONNECTIONS },
   },
   seed: 1042,
-  paletteId: 'monochrome-light',
+  paletteId: 'monochrome-dark',
   dimensions: { ...DEFAULT_DIMENSIONS },
   transparentBackground: false,
   showGuides: true,

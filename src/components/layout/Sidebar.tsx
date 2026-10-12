@@ -70,12 +70,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
 
   return (
     <aside
-      className={`h-full bg-white border-l border-[#d9d9d9] flex flex-col flex-shrink-0 transition-all duration-200 z-20 relative select-none ${
+      className={`h-full bg-[#0c0d0e] border-l border-[#222326] flex flex-col flex-shrink-0 transition-all duration-200 z-20 relative select-none ${
         collapsed ? 'w-14' : 'w-80 md:w-84'
       }`}
     >
       {/* Mode Selector Navigation */}
-      <div className={`p-2 border-b border-[#d9d9d9] bg-[#f9f9f9] ${collapsed ? 'flex flex-col gap-1' : 'grid grid-cols-6 gap-1'}`}>
+      <div className={`p-2 border-b border-[#222326] bg-[#121316] ${collapsed ? 'flex flex-col gap-1' : 'grid grid-cols-6 gap-1'}`}>
         {MODE_ITEMS.map((item) => {
           const isActive = mode === item.mode;
           return (
@@ -85,8 +85,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
               title={item.label}
               className={`flex flex-col items-center justify-center py-2 rounded transition relative border ${
                 isActive
-                  ? 'border-black text-black bg-transparent font-medium'
-                  : 'border-transparent text-[#555555] hover:text-black hover:border-[#cccccc] hover:bg-[#f0f0f0]'
+                  ? 'border-white text-white bg-[#1a1b1f] font-medium'
+                  : 'border-transparent text-[#8e919a] hover:text-white hover:border-[#333338] hover:bg-[#18191c]'
               }`}
             >
               {item.icon}
@@ -102,13 +102,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
 
       {/* Sub Tabs: Parameters | Palette | Seed */}
       {!collapsed && (
-        <div className="flex border-b border-[#d9d9d9] text-xs font-mono bg-[#f5f5f5]">
+        <div className="flex border-b border-[#222326] text-xs font-mono bg-[#121316]">
           <button
             onClick={() => setActiveTab('params')}
             className={`flex-1 py-2 text-center transition flex items-center justify-center gap-1.5 ${
               activeTab === 'params'
-                ? 'text-black border-b-2 border-black font-semibold bg-white'
-                : 'text-[#666666] hover:text-black hover:bg-[#eeeeee]'
+                ? 'text-white border-b-2 border-white font-semibold bg-[#0c0d0e]'
+                : 'text-[#8e919a] hover:text-white hover:bg-[#18191c]'
             }`}
           >
             <Sliders size={12} />
@@ -118,8 +118,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
             onClick={() => setActiveTab('style')}
             className={`flex-1 py-2 text-center transition flex items-center justify-center gap-1.5 ${
               activeTab === 'style'
-                ? 'text-black border-b-2 border-black font-semibold bg-white'
-                : 'text-[#666666] hover:text-black hover:bg-[#eeeeee]'
+                ? 'text-white border-b-2 border-white font-semibold bg-[#0c0d0e]'
+                : 'text-[#8e919a] hover:text-white hover:bg-[#18191c]'
             }`}
           >
             <PaletteIcon size={12} />
@@ -129,8 +129,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
             onClick={() => setActiveTab('seed')}
             className={`flex-1 py-2 text-center transition flex items-center justify-center gap-1.5 ${
               activeTab === 'seed'
-                ? 'text-black border-b-2 border-black font-semibold bg-white'
-                : 'text-[#666666] hover:text-black hover:bg-[#eeeeee]'
+                ? 'text-white border-b-2 border-white font-semibold bg-[#0c0d0e]'
+                : 'text-[#8e919a] hover:text-white hover:bg-[#18191c]'
             }`}
           >
             <RefreshCw size={12} />
@@ -140,12 +140,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
       )}
 
       {/* Content Area */}
-      <div className="flex-1 overflow-y-auto px-4 py-3 text-black">
+      <div className="flex-1 overflow-y-auto px-4 py-3 text-white">
         {collapsed ? (
           <div className="flex flex-col items-center gap-4 py-4">
             <button
               onClick={onToggleCollapse}
-              className="p-2 hover:bg-[#f0f0f2] text-[#555555] hover:text-black rounded"
+              className="p-2 hover:bg-[#18191c] text-[#8e919a] hover:text-white rounded"
               title="Expand Controls"
             >
               <ChevronLeft size={16} />
@@ -156,20 +156,20 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
             {/* TAB 1: PARAMETERS */}
             {activeTab === 'params' && (
               <div className="space-y-4">
-                <div className="flex items-center justify-between pb-1 border-b border-[#e8e8e8]">
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-[#555555]">
+                <div className="flex items-center justify-between pb-1 border-b border-[#222326]">
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-[#8e919a]">
                     {mode.toUpperCase()} Controls
                   </span>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={randomizeGeometryOnly}
-                      className="text-[10px] text-[#555555] hover:text-black underline font-mono"
+                      className="text-[10px] text-[#8e919a] hover:text-white underline font-mono"
                     >
                       Shuffle
                     </button>
                     <button
                       onClick={resetCurrentMode}
-                      className="text-[10px] text-[#555555] hover:text-black underline font-mono"
+                      className="text-[10px] text-[#8e919a] hover:text-white underline font-mono"
                     >
                       Reset
                     </button>
@@ -186,11 +186,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
                       return (
                         <div key={def.key} className="space-y-1.5">
                           <div className="flex items-center justify-between text-xs">
-                            <span className="text-[#222222] font-medium flex items-center gap-1.5">
+                            <span className="text-[#e4e4e7] font-medium flex items-center gap-1.5">
                               {def.label}
                             </span>
                             <div className="flex items-center gap-1.5 font-mono">
-                              <span className="text-[#555555] text-[11px] tabular-nums">
+                              <span className="text-[#a1a1aa] text-[11px] tabular-nums">
                                 {typeof value === 'number'
                                   ? def.step < 1
                                     ? value.toFixed(2)
@@ -202,8 +202,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
                                 title={isLocked ? 'Unlock parameter' : 'Lock parameter during randomization'}
                                 className={`p-0.5 rounded transition ${
                                   isLocked
-                                    ? 'text-black'
-                                    : 'text-[#999999] hover:text-black'
+                                    ? 'text-white'
+                                    : 'text-[#71717a] hover:text-white'
                                 }`}
                               >
                                 {isLocked ? <Lock size={11} /> : <Unlock size={11} />}
@@ -232,16 +232,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
                           key={def.key}
                           className="flex items-center justify-between py-1 text-xs"
                         >
-                          <span className="text-[#222222] font-medium">{def.label}</span>
+                          <span className="text-[#e4e4e7] font-medium">{def.label}</span>
                           <button
                             onClick={() => updateParam(def.key, !value)}
-                            className={`w-9 h-5 rounded-full transition-colors relative border border-[#d9d9d9] ${
-                              value ? 'bg-black' : 'bg-[#e5e5e5]'
+                            className={`w-9 h-5 rounded-full transition-colors relative border ${
+                              value ? 'bg-white border-white' : 'bg-[#27282d] border-[#3f3f46]'
                             }`}
                           >
                             <div
-                              className={`w-3.5 h-3.5 rounded-full bg-white transition-transform absolute top-0.5 ${
-                                value ? 'right-0.5' : 'left-0.5'
+                              className={`w-3.5 h-3.5 rounded-full transition-transform absolute top-0.5 ${
+                                value ? 'bg-black right-0.5' : 'bg-[#a1a1aa] left-0.5'
                               }`}
                             />
                           </button>
@@ -252,16 +252,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
                     if (def.type === 'select' && def.options) {
                       return (
                         <div key={def.key} className="space-y-1 text-xs">
-                          <label className="text-[#222222] font-medium block">
+                          <label className="text-[#e4e4e7] font-medium block">
                             {def.label}
                           </label>
                           <select
                             value={value}
                             onChange={(e) => updateParam(def.key, e.target.value)}
-                            className="w-full bg-[#f9f9f9] border border-[#d9d9d9] hover:border-black rounded px-2.5 py-1.5 text-xs text-black outline-none capitalize cursor-pointer"
+                            className="w-full bg-[#18191c] border border-[#27282d] hover:border-white rounded px-2.5 py-1.5 text-xs text-white outline-none capitalize cursor-pointer"
                           >
                             {def.options.map((opt) => (
-                              <option key={opt} value={opt} className="bg-white text-black">
+                              <option key={opt} value={opt} className="bg-[#18191c] text-white">
                                 {opt}
                               </option>
                             ))}
@@ -281,15 +281,15 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
               <div className="space-y-5">
                 {/* Palette Selection */}
                 <div className="space-y-2.5">
-                  <div className="flex items-center justify-between pb-1 border-b border-[#e8e8e8]">
-                    <span className="text-[11px] font-mono uppercase tracking-wider text-[#555555]">
+                  <div className="flex items-center justify-between pb-1 border-b border-[#222326]">
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-[#8e919a]">
                       Curated Palettes
                     </span>
                     <button
                       onClick={toggleLockPalette}
                       title={isPaletteLocked ? 'Unlock Palette' : 'Lock Palette'}
                       className={`flex items-center gap-1 text-[11px] font-mono ${
-                        isPaletteLocked ? 'text-black font-semibold' : 'text-[#888888] hover:text-black'
+                        isPaletteLocked ? 'text-white font-semibold' : 'text-[#8e919a] hover:text-white'
                       }`}
                     >
                       {isPaletteLocked ? <Lock size={11} /> : <Unlock size={11} />}
@@ -306,29 +306,29 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
                           onClick={() => setPaletteId(pal.id)}
                           className={`flex items-center justify-between p-2 rounded border transition text-left ${
                             isSelected
-                              ? 'border-black bg-[#f5f5f5]'
-                              : 'border-[#d9d9d9] hover:border-[#888888] bg-white'
+                              ? 'border-white bg-[#18191c]'
+                              : 'border-[#27282d] hover:border-[#3f3f46] bg-[#121316]'
                           }`}
                         >
                           <div>
-                            <div className="text-xs font-medium text-black">
+                            <div className="text-xs font-medium text-white">
                               {pal.name}
                             </div>
-                            <div className="text-[10px] text-[#777777] font-mono capitalize">
+                            <div className="text-[10px] text-[#8e919a] font-mono capitalize">
                               {pal.mode}
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-1 bg-[#f0f0f2] p-1 rounded border border-[#e5e5e5]">
+                          <div className="flex items-center gap-1 bg-[#0c0d0e] p-1 rounded border border-[#27282d]">
                             <div
-                              className="w-4 h-4 rounded-sm border border-[#cccccc]"
+                              className="w-4 h-4 rounded-sm border border-[#3f3f46]"
                               style={{ backgroundColor: pal.background }}
                               title="Background"
                             />
                             {pal.colors.slice(0, 3).map((c, i) => (
                               <div
                                 key={i}
-                                className="w-4 h-4 rounded-sm border border-[#cccccc]"
+                                className="w-4 h-4 rounded-sm border border-[#3f3f46]"
                                 style={{ backgroundColor: c }}
                                 title={c}
                               />
@@ -341,8 +341,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
                 </div>
 
                 {/* Artboard Aspect Ratio */}
-                <div className="space-y-2.5 pt-2 border-t border-[#e8e8e8]">
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-[#555555] block pb-1 border-b border-[#e8e8e8]">
+                <div className="space-y-2.5 pt-2 border-t border-[#222326]">
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-[#8e919a] block pb-1 border-b border-[#222326]">
                     Artboard Ratio
                   </span>
                   <div className="grid grid-cols-1 gap-1.5">
@@ -362,12 +362,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
                           }
                           className={`flex items-center justify-between px-3 py-2 rounded text-xs border transition ${
                             isSelected
-                              ? 'border-black bg-black text-white font-medium'
-                              : 'border-[#d9d9d9] hover:border-black bg-white text-black'
+                              ? 'border-white bg-white text-black font-medium'
+                              : 'border-[#27282d] hover:border-white bg-[#121316] text-[#e4e4e7]'
                           }`}
                         >
                           <span>{aspect.label}</span>
-                          <span className={`text-[10px] font-mono ${isSelected ? 'text-neutral-300' : 'text-[#777777]'}`}>
+                          <span className={`text-[10px] font-mono ${isSelected ? 'text-neutral-700' : 'text-[#71717a]'}`}>
                             {aspect.width} × {aspect.height}
                           </span>
                         </button>
@@ -381,19 +381,19 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
             {/* TAB 3: SEED & REPRODUCIBILITY */}
             {activeTab === 'seed' && (
               <div className="space-y-4">
-                <div className="pb-1 border-b border-[#e8e8e8]">
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-[#555555]">
+                <div className="pb-1 border-b border-[#222326]">
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-[#8e919a]">
                     Deterministic Seed
                   </span>
                 </div>
 
-                <p className="text-xs text-[#555555] leading-relaxed">
+                <p className="text-xs text-[#8e919a] leading-relaxed">
                   Every unique seed and parameter set produces an identical vector composition.
                   Save or share your seed to recreate this artwork anytime.
                 </p>
 
                 <div className="space-y-2">
-                  <label className="text-[11px] font-mono text-[#555555] block">
+                  <label className="text-[11px] font-mono text-[#8e919a] block">
                     Active Seed Value
                   </label>
                   <div className="flex items-center gap-1.5">
@@ -401,27 +401,27 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
                       type="number"
                       value={seed}
                       onChange={(e) => setSeed(parseInt(e.target.value) || 0)}
-                      className="flex-1 bg-[#f9f9f9] border border-[#d9d9d9] rounded px-3 py-1.5 text-xs font-mono text-black outline-none focus:border-black"
+                      className="flex-1 bg-[#18191c] border border-[#27282d] rounded px-3 py-1.5 text-xs font-mono text-white outline-none focus:border-white"
                     />
                     <button
                       onClick={rollSeed}
                       title="Roll New Random Seed"
-                      className="p-2 bg-[#f0f0f2] hover:bg-[#e5e5e5] border border-[#d9d9d9] rounded text-black transition"
+                      className="p-2 bg-[#18191c] hover:bg-[#25262c] border border-[#27282d] hover:border-[#3f3f46] rounded text-white transition"
                     >
                       <RefreshCw size={14} />
                     </button>
                     <button
                       onClick={handleCopySeed}
                       title="Copy Seed"
-                      className="p-2 bg-[#f0f0f2] hover:bg-[#e5e5e5] border border-[#d9d9d9] rounded text-black transition"
+                      className="p-2 bg-[#18191c] hover:bg-[#25262c] border border-[#27282d] hover:border-[#3f3f46] rounded text-white transition"
                     >
-                      {copiedSeed ? <Check size={14} className="text-black" /> : <Copy size={14} />}
+                      {copiedSeed ? <Check size={14} className="text-white" /> : <Copy size={14} />}
                     </button>
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-[#e8e8e8] space-y-2">
-                  <span className="text-[11px] font-mono text-[#555555] block">
+                <div className="pt-3 border-t border-[#222326] space-y-2">
+                  <span className="text-[11px] font-mono text-[#8e919a] block">
                     Quick Jump Seeds
                   </span>
                   <div className="grid grid-cols-3 gap-1.5">
@@ -431,8 +431,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
                         onClick={() => setSeed(s)}
                         className={`py-1 rounded text-xs font-mono border transition ${
                           seed === s
-                            ? 'border-black bg-black text-white font-medium'
-                            : 'border-[#d9d9d9] hover:border-black bg-white text-[#444444]'
+                            ? 'border-white bg-white text-black font-medium'
+                            : 'border-[#27282d] hover:border-white bg-[#121316] text-[#a1a1aa]'
                         }`}
                       >
                         #{s}
@@ -447,13 +447,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
       </div>
 
       {/* Collapse Toggle Footer */}
-      <div className="p-2 border-t border-[#d9d9d9] flex items-center justify-between text-[#777777] text-xs bg-[#f9f9f9]">
+      <div className="p-2 border-t border-[#222326] flex items-center justify-between text-[#71717a] text-xs bg-[#121316]">
         {!collapsed && (
-          <span className="text-[10px] font-mono px-2 text-[#777777]">v1.1.0-RELEASE</span>
+          <span className="text-[10px] font-mono px-2 text-[#71717a]">v1.1.0-RELEASE</span>
         )}
         <button
           onClick={onToggleCollapse}
-          className="p-1.5 hover:bg-[#eeeeee] hover:text-black rounded ml-auto transition text-black"
+          className="p-1.5 hover:bg-[#18191c] hover:text-white rounded ml-auto transition text-[#a1a1aa]"
           title={collapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
         >
           {collapsed ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}
