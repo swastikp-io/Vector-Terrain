@@ -17,7 +17,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-[#E5E5E5] text-black select-none transition-all">
+    <nav className="sticky top-0 z-40 w-full bg-white/65 backdrop-blur-xl border-b border-black/[0.06] shadow-[0_4px_30px_rgba(0,0,0,0.03)] supports-[backdrop-filter]:bg-white/60 text-black select-none transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
         {/* Left: Geometric Mark & Product Name */}
         <div className="flex items-center gap-3">
@@ -27,7 +27,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             title="Vector Terrain"
           >
             {/* Custom procedural geometric symbol */}
-            <div className="w-6 h-6 border border-[#E5E5E5] group-hover:border-black flex items-center justify-center relative transition-colors duration-200 bg-[#F7F7F7]">
+            <div className="w-6 h-6 border border-black/10 group-hover:border-black flex items-center justify-center relative transition-colors duration-200 bg-black/[0.03] backdrop-blur-sm">
               <div className="w-2.5 h-2.5 bg-black rounded-none rotate-45 group-hover:rotate-90 transition-transform duration-300" />
             </div>
             <span className="font-mono text-xs sm:text-sm font-semibold tracking-wider text-black uppercase">
@@ -79,7 +79,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </span>
               <button
                 onClick={onSignOut}
-                className="px-3 py-1.5 border border-[#E5E5E5] hover:border-black text-black font-mono text-xs uppercase tracking-wider transition-colors"
+                className="px-3 py-1.5 border border-black/10 hover:border-black bg-white/40 hover:bg-white text-black font-mono text-xs uppercase tracking-wider transition-colors backdrop-blur-sm"
               >
                 Sign Out
               </button>
@@ -107,7 +107,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {user ? (
             <button
               onClick={onSignOut}
-              className="px-2.5 py-1 border border-[#E5E5E5] text-black font-mono text-[11px] uppercase"
+              className="px-2.5 py-1 border border-black/10 bg-white/40 text-black font-mono text-[11px] uppercase backdrop-blur-sm"
             >
               Sign Out
             </button>
@@ -138,7 +138,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile dropdown */}
       {mobileMenuOpen && (
-        <div className="sm:hidden px-4 py-3 bg-[#F7F7F7] border-b border-[#E5E5E5] flex flex-col gap-2.5 text-xs font-mono uppercase tracking-wider text-[#666666]">
+        <div className="sm:hidden px-4 py-3 bg-white/80 backdrop-blur-xl border-b border-black/[0.06] shadow-lg flex flex-col gap-2.5 text-xs font-mono uppercase tracking-wider text-[#666666]">
           <a
             href="#systems"
             onClick={() => setMobileMenuOpen(false)}

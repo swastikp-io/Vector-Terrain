@@ -152,8 +152,7 @@ export const ArtboardCanvas: React.FC<ArtboardCanvasProps> = ({ geometry }) => {
     // Render artboard guides overlay if enabled
     if (stateRef.current.showGuides) {
       ctx.save();
-      const isDark = stateRef.current.palette.background !== '#ffffff';
-      ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.25)' : 'rgba(0, 0, 0, 0.25)';
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.25)';
       ctx.lineWidth = 1;
       ctx.setLineDash([4, 4]);
       ctx.strokeRect(0, 0, width, height);
@@ -223,23 +222,21 @@ export const ArtboardCanvas: React.FC<ArtboardCanvasProps> = ({ geometry }) => {
   return (
     <div
       ref={outerContainerRef}
-      className="relative flex-1 w-full h-full overflow-hidden bg-[#0c0d0e] flex items-center justify-center select-none cursor-default"
+      className="relative flex-1 w-full h-full overflow-hidden bg-[#f0f0f2] flex items-center justify-center select-none cursor-default"
     >
       {/* Subtle minimalist grid background */}
       <div
-        className="absolute inset-0 opacity-[0.12] pointer-events-none"
+        className="absolute inset-0 opacity-[0.07] pointer-events-none"
         style={{
           backgroundImage:
-            'radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.4) 1px, transparent 0)',
+            'radial-gradient(circle at 1px 1px, #000000 1px, transparent 0)',
           backgroundSize: '24px 24px',
         }}
       />
 
       {/* Designated Canvas Space: strictly contained, never exceeds canvas space */}
       <div
-        className={`relative shadow-[0_12px_45px_rgba(0,0,0,0.7)] border rounded-sm overflow-hidden flex-shrink-0 transition-all duration-150 ease-out ${
-          palette.background === '#ffffff' ? 'border-[#3f3f46]' : 'border-[#27272a]'
-        }`}
+        className="relative shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-[#d9d9d9] rounded-sm overflow-hidden flex-shrink-0 transition-all duration-150 ease-out"
         style={{
           width: `${displayWidth}px`,
           height: `${displayHeight}px`,
@@ -249,10 +246,10 @@ export const ArtboardCanvas: React.FC<ArtboardCanvasProps> = ({ geometry }) => {
         {/* Transparency checkerboard when enabled */}
         {transparentBackground && (
           <div
-            className="absolute inset-0 pointer-events-none opacity-40"
+            className="absolute inset-0 pointer-events-none opacity-30"
             style={{
               backgroundImage:
-                'linear-gradient(45deg, #222328 25%, transparent 25%), linear-gradient(-45deg, #222328 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #222328 75%), linear-gradient(-45deg, transparent 75%, #222328 75%)',
+                'linear-gradient(45deg, #e0e0e0 25%, transparent 25%), linear-gradient(-45deg, #e0e0e0 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #e0e0e0 75%), linear-gradient(-45deg, transparent 75%, #e0e0e0 75%)',
               backgroundSize: '16px 16px',
               backgroundPosition: '0 0, 0 8px, 8px -8px, -8px 0px',
             }}
@@ -271,12 +268,12 @@ export const ArtboardCanvas: React.FC<ArtboardCanvasProps> = ({ geometry }) => {
       </div>
 
       {/* Canvas View Toggles (Bottom Left) */}
-      <div className="absolute bottom-4 left-4 flex items-center gap-1.5 bg-[#18191c]/95 backdrop-blur-md border border-[#27282d] p-1 rounded-md shadow-sm text-[#a1a1aa] z-30">
+      <div className="absolute bottom-4 left-4 flex items-center gap-1.5 bg-white/95 backdrop-blur-md border border-[#d9d9d9] p-1 rounded-md shadow-sm text-neutral-700 z-30">
         <button
           onClick={toggleGuides}
           title={showGuides ? 'Hide Artboard Guides' : 'Show Artboard Guides'}
           className={`p-1.5 rounded transition ${
-            showGuides ? 'bg-white text-black' : 'hover:bg-[#25262c] hover:text-white'
+            showGuides ? 'bg-black text-white' : 'hover:bg-[#eeeeee] hover:text-black'
           }`}
         >
           <Grid size={14} />
@@ -285,7 +282,7 @@ export const ArtboardCanvas: React.FC<ArtboardCanvasProps> = ({ geometry }) => {
           onClick={toggleTransparent}
           title={transparentBackground ? 'Opaque Background' : 'Transparent Canvas'}
           className={`p-1.5 rounded transition ${
-            transparentBackground ? 'bg-white text-black' : 'hover:bg-[#25262c] hover:text-white'
+            transparentBackground ? 'bg-black text-white' : 'hover:bg-[#eeeeee] hover:text-black'
           }`}
         >
           <Eye size={14} />

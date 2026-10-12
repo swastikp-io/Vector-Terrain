@@ -1,8 +1,8 @@
 # Vector Terrain // Procedural Vector Art Playground
 
-An editorial, high-performance procedural vector art playground and motion design studio built with **React 19**, **TypeScript**, **Vite**, **Tailwind CSS**, and **HTML5 Canvas 2D**.
+An editorial, high-performance procedural vector art playground built with **React 19**, **TypeScript**, **Vite**, **Tailwind CSS v4**, and **Zustand v5**.
 
-Designed around the principle of **clean mathematical vector geometry generation independent of the rendering target**, **Vector Terrain** produces structured path data that renders in real time and exports directly to production-ready **SVG**, high-resolution **PNG**, vector **PDF**, and animated **WebM / MP4** motion graphics.
+Designed around the principle of **clean mathematical vector geometry generation decoupled from rendering surfaces**, Vector Terrain produces structured path data that renders synchronously to a high-DPI HTML5 Canvas preview surface and exports to production-ready, resolution-independent **SVG**, **PNG**, **PDF**, and **animated video (WebM / MP4)**.
 
 ---
 
@@ -15,25 +15,23 @@ Designed around the principle of **clean mathematical vector geometry generation
   3. **Branches**: Geometrically controlled multi-trunk divergence into wide deltas and smooth convergence without arbitrary intersections.
   4. **Interference**: Harmonograph and Lissajous parametric equations producing moiré optical vibrations and rotational symmetry rosettes.
   5. **Contours**: Topographic vector isocontours extracted from multi-octave scalar noise fields using an optimized $O(N)$ spatial bucket Marching Squares algorithm.
-  6. **Connections**: Schematic network topology with curved cubic Bézier traces, concentric node terminals, and technical telemetry glyphs.
+  6. **Connections**: Schematic network topology with curved cubic Bézier traces, concentric node terminals, and technical telemetry glyphs (`organic`, `radial`, `grid`, and `layered` layouts).
+- **Studio Layout**:
+  - **Artboard Canvas on the Left**: Anchored in a dedicated container that proportionally scales and fits any aspect ratio without overflow or panning.
+  - **Controls Drawer on the Right**: Collapsible parameters drawer with fine-tuned sliders, curated palettes, and seed randomizers.
+- **Guaranteed Canvas Bounds**: Mathematical clamping across all generator topologies ensures that lines, control points, nodes, and telemetry glyphs strictly remain within designated canvas boundaries.
 - **Deterministic Seed Architecture**: Mulberry32 & SplitMix32 pseudo-random number generation guarantee identical compositions for any given seed and parameter set.
-- **Monochrome Dark Design System**:
-  - Deep `#0c0d0e` canvas backdrop with high-contrast `#ffffff` vector strokes and neutral accents.
-  - Floating, borderless transparent top navigation bar with rounded control islands.
-  - Curated palettes including Monochrome Dark, Monochrome Light, and custom themes.
 - **Motion & Animation Engine**:
-  - Real-time 60 FPS animation loop with deterministic phase modulation.
-  - Multi-speed playback controls (0.5×, 1.0×, 1.5×, 2.0×) and timeline reset.
-- **Multi-Format Export Pipeline**:
-  - **SVG**: Primary lossless vector output with clean XML markup, stable IDs, and transparency options.
-  - **PNG**: Direct offscreen canvas rasterization at 1× (Standard), 2× (Retina HD), or 3× (Ultra 4K).
-  - **PDF**: True vector PDF documents using jsPDF with native Bézier curve primitives.
-  - **Animated Video (WebM / MP4)**: Frame-by-frame canvas recording up to 15 seconds at 30 or 60 FPS with progress telemetry and bitrate optimization.
-- **Authentication & Persistence**:
-  - Supabase session management with email authentication and protected studio routing.
-  - Curated preset library and persistent parameter state via Zustand.
-- **Editorial Showcase Home Page**:
-  - Multi-section generative design archive with interactive live previews and responsive navigation.
+  - High-performance, 60 FPS deterministic animation clock.
+  - Variable speed multipliers (`0.5×`, `1.0×`, `1.5×`, `2.0×`) with immediate visual feedback.
+  - Frame reset and play/pause controls.
+- **Curated Editorial Palettes**: Monochrome Light, Monochrome Dark, Cobalt & White, Violet & Cream, Forest & Ivory, Editorial Spectrum, and Blueprint Cyan.
+- **Export Pipeline**:
+  - **SVG**: Lossless vector output with clean XML markup, stable IDs, and transparency options.
+  - **PNG**: Direct offscreen canvas rasterization at 1× (Standard), 2× (Retina HD), or 3× (Ultra 4K) resolutions.
+  - **PDF**: True vector PDF document generation using jsPDF with native curve primitives.
+  - **Animated Video**: Hardware-accelerated 60 FPS / 30 FPS video export (WebM VP9 or MP4 H.264) up to 15 seconds.
+- **Authentication & Persistence**: Integrated Supabase authentication with session persistence and route protection.
 
 ---
 
@@ -41,61 +39,52 @@ Designed around the principle of **clean mathematical vector geometry generation
 
 ```
 src/
-├── App.tsx                     # Main application layout, view switching & shortcut bindings
+├── App.tsx                     # Main application layout, route protection & studio container
 ├── components/
-│   ├── auth/
-│   │   └── AuthPage.tsx        # Supabase sign-in and sign-up dialogs
 │   ├── canvas/
-│   │   └── ArtboardCanvas.tsx  # Lifecycle-safe HTML5 Canvas 2D renderer with guide overlay
-│   ├── common/
-│   │   └── ErrorBoundary.tsx   # React error boundary with dark mode recovery fallback
+│   │   └── ArtboardCanvas.tsx   # High-DPI HTML5 2D canvas with auto-fitting responsive artboard
+│   ├── layout/
+│   │   ├── TopBar.tsx           # Clean header with seed tools, history, speed controls, and export
+│   │   ├── Sidebar.tsx          # Right-side drawer with dynamic parameter sliders and palettes
+│   │   └── StatusBar.tsx        # Telemetry footer with timings and path counts
 │   ├── export/
-│   │   └── ExportModal.tsx     # Modern multi-format dialog for SVG, PNG, PDF & Video
-│   ├── home/
-│   │   ├── HomePage.tsx        # Public editorial landing page
-│   │   ├── Navbar.tsx          # Editorial navigation bar
-│   │   ├── HeroSection.tsx     # Kinetic generative headline
-│   │   ├── SystemsSection.tsx  # Showcase of the 6 procedural systems
-│   │   ├── InteractivePreview.tsx # Live embedded mini playground
-│   │   ├── GallerySection.tsx  # Selected computational print archive
-│   │   └── Footer.tsx          # Colophon and release metadata
-│   └── layout/
-│       ├── TopBar.tsx          # Floating transparent navigation bar with motion controls
-│       ├── Sidebar.tsx         # Tabbed controls drawer (Parameters, Palette, Seed)
-│       └── StatusBar.tsx       # Bottom telemetry bar with timing and geometry stats
+│   │   └── ExportModal.tsx      # Editorial modal card for SVG, PNG, PDF, and video exports
+│   ├── auth/
+│   │   └── AuthPage.tsx         # User authentication, sign-in, and sign-up flows
+│   └── home/
+│       └── HomePage.tsx         # Editorial landing page showcasing procedural systems
 ├── engine/
 │   ├── core/
-│   │   ├── types.ts            # Central types (VectorPath, GeometryResult, ExportConfig)
-│   │   ├── math.ts             # Vector algebra, lerp, easing, and safety clamps
-│   │   ├── geometry.ts         # Cubic Bézier evaluation, Catmull-Rom splines, bounding boxes
-│   │   └── random.ts           # Mulberry32 seeded PRNG and smooth gradient noise
+│   │   ├── types.ts             # Central TypeScript types (VectorPath, GeometryResult, Configs)
+│   │   ├── math.ts              # Vector math, lerp, easing, clamping, and rotations
+│   │   ├── geometry.ts          # Cubic Bézier evaluation, Catmull-Rom splines, and bounding boxes
+│   │   └── random.ts            # Mulberry32 seeded PRNG and 2D smooth gradient noise
 │   ├── generators/
-│   │   ├── index.ts            # Unified generator dispatcher
-│   │   ├── waveforms.ts        # Mode 1: Parallel waving curves and braided transitions
-│   │   ├── loops.ts            # Mode 2: Elliptical and orbital loop ribbons
-│   │   ├── branches.ts         # Mode 3: Stream divergence and tributary reconvergence
-│   │   ├── interference.ts     # Mode 4: Parametric Lissajous and moiré rosettes
-│   │   ├── contours.ts         # Mode 5: Fast Marching Squares isocontour extraction
-│   │   └── connections.ts      # Mode 6: Networked nodes and curved circuit bus
+│   │   ├── index.ts             # Unified generator dispatcher
+│   │   ├── waveforms.ts         # Mode 1: Parallel waving curves and braided transitions
+│   │   ├── loops.ts             # Mode 2: Elliptical and orbital loop ribbons
+│   │   ├── branches.ts          # Mode 3: Geometrically controlled stream divergence
+│   │   ├── interference.ts      # Mode 4: Parametric Lissajous and moiré rosettes
+│   │   ├── contours.ts          # Mode 5: Fast Marching Squares isocontour extraction
+│   │   └── connections.ts       # Mode 6: Networked nodes and curved Bézier circuit bus
 │   ├── renderers/
-│   │   ├── svgRenderer.ts      # Pure SVG XML serializer with precision formatting
-│   │   └── canvasRenderer.ts   # Offscreen Canvas 2D surface renderer
+│   │   ├── canvasRenderer.ts    # High-performance 2D canvas context stroke renderer
+│   │   └── svgRenderer.ts       # Pure SVG XML serializer with precision formatting
 │   └── export/
-│       ├── index.ts            # Unified export coordinator
-│       ├── svgExport.ts        # SVG file exporter
-│       ├── pngExport.ts        # Multi-resolution raster exporter
-│       ├── pdfExport.ts        # Vector PDF exporter using jsPDF
-│       └── animationExport.ts  # Frame-accurate WebM/MP4 MediaRecorder video pipeline
+│       ├── index.ts             # Unified export coordinator
+│       ├── svgExport.ts         # Standalone SVG document exporter
+│       ├── pngExport.ts         # Multi-resolution raster exporter
+│       ├── pdfExport.ts         # Vector PDF exporter using jsPDF
+│       └── animationExport.ts   # Multi-format video encoder (WebM / MP4)
 ├── lib/
-│   └── supabase.ts             # Supabase client initialization and authentication helpers
+│   └── supabase.ts              # Supabase client authentication and profile helpers
 ├── store/
-│   ├── playgroundStore.ts      # Central Zustand state store with undo/redo history
-│   ├── defaults.ts             # Default configurations, aspect ratios, and parameter schemas
-│   ├── palettes.ts             # Curated color palettes with Monochrome Dark defaults
-│   └── presets.ts              # Curated composition presets
-├── utils/
-│   └── download.ts             # Browser blob and media download helpers
-└── index.css                   # Tailwind CSS v4 styling, custom range sliders & dark theme
+│   ├── playgroundStore.ts       # Zustand store with undo/redo and parameter locking
+│   ├── defaults.ts              # Default configurations, aspect ratios, and schemas
+│   ├── palettes.ts              # Curated color palettes and theme color resolvers
+│   └── presets.ts               # Curated composition presets
+└── utils/
+    └── download.ts              # Browser blob download utilities
 ```
 
 ---
@@ -113,7 +102,7 @@ src/
 # Install dependencies
 npm install
 
-# Start Vite development server
+# Start development server
 npm run dev
 
 # Run automated Vitest test suite
@@ -137,7 +126,7 @@ npm run preview
 | `Ctrl+Z` / `Cmd+Z` | Undo last parameter change |
 | `Ctrl+Y` / `Cmd+Shift+Z` | Redo parameter change |
 | `e` | Open Export artwork dialog |
-| `1` – `6` | Switch between generator modes |
+| `1` – `6` | Switch between the 6 generator modes |
 
 ---
 
@@ -193,7 +182,7 @@ npm run preview
 
 ## Testing & Quality Assurance
 
-The codebase includes an automated test suite powered by **Vitest** (55 tests across 10 test files):
+The codebase includes an automated test suite powered by **Vitest**:
 
 ```bash
 npm test
@@ -202,13 +191,13 @@ npm test
 - **`tests/math.test.ts`**: Vector algebra, normalization, rotations, distance, and easing curves.
 - **`tests/random.test.ts`**: Deterministic PRNG sequences, range boundaries, gaussian distribution, and 2D gradient noise.
 - **`tests/geometry.test.ts`**: Cubic Bézier evaluation, de Casteljau subdivision, Catmull-Rom spline continuity, and bounding boxes.
-- **`tests/generators.test.ts`**: Verifies all 6 generator modes produce valid geometry and deterministic outputs.
+- **`tests/generators.test.ts`**: Verifies all 6 generator modes and topologies produce valid geometry strictly constrained within canvas bounds.
 - **`tests/store.test.ts`**: Preset loading, parameter locking, randomization bounds, and undo/redo stacks.
 - **`tests/export.test.ts`**: SVG XML formatting, coordinate precision, metadata embedding, and transparency.
-- **`tests/animationExport.test.ts`**: Frame sequencing, duration calculations, bitrate configuration, and abort controller signals.
-- **`tests/auth.test.ts`**: Authentication validation, error handling, credential sanitization, and session state.
-- **`tests/regression.test.ts`**: Monochrome dark defaults, generator isolation, and parameter preservation.
+- **`tests/animationExport.test.ts`**: Multi-format video encoding, frame count accuracy, and MIME resolution.
 - **`tests/performance.test.ts`**: Generation benchmarks verifying all modes generate under 75ms in high-density stress tests.
+- **`tests/regression.test.ts`**: Deterministic frame generation consistency across time frames.
+- **`tests/auth.test.ts`**: Authentication validation and security checks.
 
 ---
 
