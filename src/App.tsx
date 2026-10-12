@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import { usePlaygroundStore } from './store/playgroundStore';
 import { generateGeometry } from './engine/generators';
 import { getPaletteById } from './store/palettes';
@@ -37,6 +37,12 @@ export const App: React.FC = () => {
   } = usePlaygroundStore();
 
   const [user, setUser] = useState<User | null>(() => getStoredUserSync());
+  const userRef = useRef<User | null>(user);
+
+  useEffect(() => {
+    userRef.current = user;
+  }, [user]);
+
   const [authLoading, setAuthLoading] = useState(true);
   const [authNotice, setAuthNotice] = useState<string | null>(() => {
     const initialUser = getStoredUserSync();
@@ -81,6 +87,7 @@ export const App: React.FC = () => {
 
     getCurrentUser().then((u) => {
       if (!isMounted) return;
+      userRef.current = u;
       setUser(u);
       setAuthLoading(false);
 
@@ -96,8 +103,9 @@ export const App: React.FC = () => {
     if (isSupabaseConfigured) {
       const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
         const currentUser = session?.user || null;
+        userRef.current = currentUser || getStoredUserSync();
         setUser(currentUser);
-        if (!currentUser) {
+        if (!currentUser && !getStoredUserSync()) {
           // If signed out while in playground, bounce immediately to homepage
           setCurrentView((prev) => {
             if (prev === 'playground') {
@@ -121,10 +129,12 @@ export const App: React.FC = () => {
   }, []);
 
   // Sync hash routing with view state and protect playground route
+  // Uses userRef and getStoredUserSync to prevent stale closure bounces on login
   useEffect(() => {
     const handleHashChange = () => {
+      const activeUser = userRef.current || getStoredUserSync();
       if (window.location.hash === '#playground') {
-        if (!user) {
+        if (!activeUser) {
           setAuthNotice('Authentication Required — Log in or sign up to enter the procedural playground.');
           setAuthInitialMode('signup');
           setCurrentView('auth');
@@ -143,7 +153,7 @@ export const App: React.FC = () => {
 
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
-  }, [user]);
+  }, []);
 
   const handleOpenPlayground = useCallback(
     (params?: {
@@ -151,8 +161,9 @@ export const App: React.FC = () => {
       seed?: number;
       config?: GeneratorConfig;
     }) => {
+      const activeUser = userRef.current || getStoredUserSync();
       // REQUIRE AUTHENTICATION: Without logging in or signing up, user cannot enter playground
-      if (!user) {
+      if (!activeUser) {
         setPendingPlaygroundParams(params || null);
         setAuthNotice('Authentication Required — Log in or sign up to enter the procedural playground.');
         setAuthInitialMode('signup');
@@ -175,7 +186,7 @@ export const App: React.FC = () => {
       window.location.hash = 'playground';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     },
-    [user, setMode, setSeed, setConfigForMode]
+    [setMode, setSeed, setConfigForMode]
   );
 
   const handleBackToHome = useCallback(() => {
@@ -196,6 +207,7 @@ export const App: React.FC = () => {
 
   const handleAuthSuccess = useCallback(
     (authedUser: User) => {
+      userRef.current = authedUser;
       setUser(authedUser);
       setAuthNotice(null);
 
@@ -223,6 +235,7 @@ export const App: React.FC = () => {
 
   const handleSignOut = useCallback(async () => {
     await signOutUser();
+    userRef.current = null;
     setUser(null);
     setPendingPlaygroundParams(null);
     setAuthNotice(null);
