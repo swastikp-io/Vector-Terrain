@@ -99,28 +99,21 @@ export const AuthPage: React.FC<AuthPageProps> = ({
     <div className="min-h-screen w-full bg-white text-black font-sans flex flex-col justify-between selection:bg-black selection:text-white">
       {/* Top Header */}
       <header className="h-14 border-b border-[#E5E5E5] px-4 sm:px-8 flex items-center justify-between select-none">
+        {/* Left: Product Name (Icon removed) */}
+        <div className="flex items-center">
+          <span className="font-mono text-xs sm:text-sm font-semibold tracking-wider uppercase text-black">
+            VECTOR TERRAIN
+          </span>
+        </div>
+
+        {/* Right: Back to Homepage */}
         <button
           onClick={onBack}
-          className="flex items-center gap-2 text-xs font-mono text-[#666666] hover:text-black py-1 px-2.5 rounded transition-colors"
+          className="flex items-center gap-2 text-xs font-mono text-[#666666] hover:text-black py-1 px-2.5 transition-colors"
         >
           <ArrowLeft size={14} />
           <span>Back to Homepage</span>
         </button>
-
-        <div className="flex items-center gap-2.5">
-          <div className="w-5 h-5 border border-[#E5E5E5] bg-[#F7F7F7] flex items-center justify-center">
-            <div className="w-2 h-2 bg-black rotate-45" />
-          </div>
-          <span className="font-mono text-xs font-semibold tracking-wider uppercase">
-            VECTOR <span className="text-[#888888] font-normal">/</span> PLAYGROUND
-          </span>
-        </div>
-
-        <div className="w-24 sm:w-32 flex justify-end">
-          <span className="font-mono text-[10px] text-[#888888] uppercase hidden sm:inline">
-            AUTH / 001
-          </span>
-        </div>
       </header>
 
       {/* Main Centered Auth Form */}
@@ -307,12 +300,6 @@ export const AuthPage: React.FC<AuthPageProps> = ({
             >
               {mode === 'login' ? 'Sign up here' : 'Log in here'}
             </button>
-          </div>
-
-          {/* Supabase status indicator */}
-          <div className="mt-5 pt-3 border-t border-[#E5E5E5] flex items-center justify-between text-[10px] font-mono text-[#888888]">
-            <span>ENGINE: SUPABASE AUTH</span>
-            <span>{isSupabaseConfigured ? 'CONNECTED' : 'LOCAL / DEMO'}</span>
           </div>
         </div>
       </main>

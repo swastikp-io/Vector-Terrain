@@ -99,28 +99,39 @@ BEGIN
   v_clean_email := LOWER(TRIM(user_email));
 
   -- Look up user by lowercase email
-  SELECT id, email, password_hash, COALESCE(full_name, '') AS full_name, created_at INTO v_user
-  FROM public.users
-  WHERE LOWER(TRIM(email)) = v_clean_email;
+  BEGIN
+    SELECT id, email, password_hash, COALESCE(full_name, '') AS full_name, created_at INTO v_user
+    FROM public.users
+    WHERE LOWER(TRIM(email)) = v_clean_email;
+  EXCEPTION WHEN OTHERS THEN
+    -- Fallback in case full_name column doesn't exist yet
+    SELECT id, email, password_hash, '' AS full_name, created_at INTO v_user
+    FROM public.users
+    WHERE LOWER(TRIM(email)) = v_clean_email;
+  END;
 
-  IF NOT FOUND THEN
+  IF v_user.id IS NULL THEN
     RETURN jsonb_build_object('success', false, 'error', 'Invalid email or password.');
   END IF;
 
-  -- Verify password using bcrypt crypt()
-  IF v_user.password_hash = crypt(user_password, v_user.password_hash) THEN
-    RETURN jsonb_build_object(
-      'success', true,
-      'user', jsonb_build_object(
-        'id', v_user.id,
-        'email', v_user.email,
-        'full_name', v_user.full_name,
-        'created_at', v_user.created_at
-      )
-    );
-  ELSE
+  -- Safe verify password using bcrypt crypt()
+  BEGIN
+    IF v_user.password_hash = crypt(user_password, v_user.password_hash) THEN
+      RETURN jsonb_build_object(
+        'success', true,
+        'user', jsonb_build_object(
+          'id', v_user.id,
+          'email', v_user.email,
+          'full_name', v_user.full_name,
+          'created_at', v_user.created_at
+        )
+      );
+    ELSE
+      RETURN jsonb_build_object('success', false, 'error', 'Invalid email or password.');
+    END IF;
+  EXCEPTION WHEN OTHERS THEN
     RETURN jsonb_build_object('success', false, 'error', 'Invalid email or password.');
-  END IF;
+  END;
 END;
 $$;
 

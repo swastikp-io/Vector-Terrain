@@ -80,14 +80,52 @@ export async function signInWithEmail(email: string, password: string): Promise<
     };
   }
 
-  // --- Login via login_user RPC (public.users table) ---
+  // --- Login via login_user RPC (public.users table) with resilient fallbacks ---
   try {
-    const { data: rpcData, error: rpcError } = await supabase.rpc('login_user', {
-      user_email: cleanEmail,
-      user_password: password,
-    });
+    let rpcData: any = null;
+    let rpcError: any = null;
 
+    try {
+      const res = await supabase.rpc('login_user', {
+        user_email: cleanEmail,
+        user_password: password,
+      });
+      rpcData = res.data;
+      rpcError = res.error;
+    } catch (err: any) {
+      rpcError = err;
+    }
+
+    // Fallback if parameter names in Postgres were (email, password)
+    if (rpcError && (rpcError.message?.includes('user_email') || rpcError.code === 'PGRST202' || rpcError.status === 400)) {
+      try {
+        const fallbackRes = await supabase.rpc('login_user', {
+          email: cleanEmail,
+          password: password,
+        });
+        if (!fallbackRes.error) {
+          rpcData = fallbackRes.data;
+          rpcError = null;
+        }
+      } catch {
+        // ignore
+      }
+    }
+
+    // Fallback to native Supabase Auth if RPC returned an error
     if (rpcError) {
+      try {
+        const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+          email: cleanEmail,
+          password: password,
+        });
+        if (!authError && authData.user) {
+          return { user: authData.user, session: authData.session, error: null };
+        }
+      } catch {
+        // ignore
+      }
+
       if (isRpcNotFoundError(rpcError)) {
         return {
           user: null,
@@ -95,7 +133,7 @@ export async function signInWithEmail(email: string, password: string): Promise<
           error: 'Database functions not set up. Please run the SQL script in your Supabase SQL Editor first.',
         };
       }
-      return { user: null, session: null, error: rpcError.message };
+      return { user: null, session: null, error: rpcError.message || 'Invalid email or password.' };
     }
 
     if (rpcData) {
@@ -116,6 +154,18 @@ export async function signInWithEmail(email: string, password: string): Promise<
           localStorage.setItem('vp_custom_user', JSON.stringify(customUser));
           return { user: customUser, session: null, error: null };
         } else {
+          // If custom table check failed, also try native Supabase Auth in case user was registered in auth.users
+          try {
+            const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+              email: cleanEmail,
+              password: password,
+            });
+            if (!authError && authData.user) {
+              return { user: authData.user, session: authData.session, error: null };
+            }
+          } catch {
+            // ignore
+          }
           return { user: null, session: null, error: rpcData.error || 'Invalid email or password.' };
         }
       }
@@ -198,6 +248,22 @@ export async function signUpWithEmail(
     }
 
     if (rpcError) {
+      // Fallback: Try native Supabase Auth if public.users RPC isn't deployed yet
+      try {
+        const { data: authData, error: authError } = await supabase.auth.signUp({
+          email: cleanEmail,
+          password: password,
+          options: {
+            data: { full_name: cleanFullName },
+          },
+        });
+        if (!authError && authData.user) {
+          return { user: authData.user, session: authData.session, error: null };
+        }
+      } catch {
+        // ignore
+      }
+
       if (isRpcNotFoundError(rpcError)) {
         return {
           user: null,
