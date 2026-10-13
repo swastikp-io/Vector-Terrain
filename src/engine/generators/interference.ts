@@ -80,6 +80,7 @@ export function generateInterference(
         commands,
         strokeColor: color,
         strokeWidth: config.strokeWidth,
+        strokeRoughness: config.strokeRoughness,
         strokeOpacity: 0.85,
         strokeCap: 'round',
         strokeJoin: 'round',

@@ -183,6 +183,7 @@ export function generateContours(
         commands,
         strokeColor: color,
         strokeWidth: config.strokeWidth,
+        strokeRoughness: config.strokeRoughness,
         strokeOpacity: 0.88,
         strokeCap: 'round',
         strokeJoin: 'round',

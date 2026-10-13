@@ -35,6 +35,7 @@ export const DEFAULT_WAVEFORMS: WaveformsConfig = {
   splitMergeStrength: 0.45,
   transitionRegions: 2,
   strokeWidth: 1.5,
+  strokeRoughness: 0,
 };
 
 export const DEFAULT_LOOPS: LoopsConfig = {
@@ -50,6 +51,7 @@ export const DEFAULT_LOOPS: LoopsConfig = {
   symmetry: true,
   connectConsecutive: false,
   strokeWidth: 1.5,
+  strokeRoughness: 0,
 };
 
 export const DEFAULT_BRANCHES: BranchesConfig = {
@@ -63,6 +65,7 @@ export const DEFAULT_BRANCHES: BranchesConfig = {
   spacing: 24,
   transitionSmoothness: 0.85,
   strokeWidth: 1.5,
+  strokeRoughness: 0,
 };
 
 export const DEFAULT_INTERFERENCE: InterferenceConfig = {
@@ -76,6 +79,7 @@ export const DEFAULT_INTERFERENCE: InterferenceConfig = {
   scale: 0.85,
   rotation: 0,
   strokeWidth: 1.25,
+  strokeRoughness: 0,
 };
 
 export const DEFAULT_CONTOURS: ContoursConfig = {
@@ -89,6 +93,7 @@ export const DEFAULT_CONTOURS: ContoursConfig = {
   radialInfluence: 0.4,
   gridResolution: 42,
   strokeWidth: 1.5,
+  strokeRoughness: 0,
 };
 
 export const DEFAULT_CONNECTIONS: ConnectionsConfig = {
@@ -101,6 +106,7 @@ export const DEFAULT_CONNECTIONS: ConnectionsConfig = {
   nodeSize: 9,
   layoutStyle: 'organic',
   strokeWidth: 1.5,
+  strokeRoughness: 0,
 };
 
 export interface ParamDef {
@@ -125,6 +131,7 @@ export const PARAM_DEFINITIONS: Record<string, ParamDef[]> = {
     { key: 'splitMergeStrength', label: 'Braid Convergence', min: 0, max: 1.0, step: 0.05, type: 'range' },
     { key: 'transitionRegions', label: 'Transition Zones', min: 1, max: 5, step: 1, type: 'range' },
     { key: 'strokeWidth', label: 'Stroke Weight', min: 0.5, max: 6, step: 0.25, type: 'range' },
+    { key: 'strokeRoughness', label: 'Stroke Roughness', min: 0, max: 20, step: 0.25, type: 'range' },
   ],
   loops: [
     { key: 'loopCount', label: 'Loop Count', min: 3, max: 35, step: 1, type: 'range' },
@@ -138,6 +145,7 @@ export const PARAM_DEFINITIONS: Record<string, ParamDef[]> = {
     { key: 'symmetry', label: 'Alternating Symmetry', min: 0, max: 1, step: 1, type: 'boolean' },
     { key: 'connectConsecutive', label: 'Continuous Ribbon', min: 0, max: 1, step: 1, type: 'boolean' },
     { key: 'strokeWidth', label: 'Stroke Weight', min: 0.5, max: 6, step: 0.25, type: 'range' },
+    { key: 'strokeRoughness', label: 'Stroke Roughness', min: 0, max: 20, step: 0.25, type: 'range' },
   ],
   branches: [
     { key: 'initialLineCount', label: 'Trunk Streams', min: 1, max: 6, step: 1, type: 'range' },
@@ -148,6 +156,7 @@ export const PARAM_DEFINITIONS: Record<string, ParamDef[]> = {
     { key: 'spacing', label: 'Stream Expansion', min: 10, max: 50, step: 1, type: 'range' },
     { key: 'transitionSmoothness', label: 'Transition Curve', min: 0.2, max: 1.0, step: 0.05, type: 'range' },
     { key: 'strokeWidth', label: 'Stroke Weight', min: 0.5, max: 6, step: 0.25, type: 'range' },
+    { key: 'strokeRoughness', label: 'Stroke Roughness', min: 0, max: 20, step: 0.25, type: 'range' },
   ],
   interference: [
     { key: 'frequencyX', label: 'Harmonic X', min: 1, max: 12, step: 1, type: 'range' },
@@ -159,6 +168,7 @@ export const PARAM_DEFINITIONS: Record<string, ParamDef[]> = {
     { key: 'scale', label: 'Field Scale', min: 0.4, max: 1.3, step: 0.05, type: 'range' },
     { key: 'rotation', label: 'Base Rotation', min: 0, max: 360, step: 5, type: 'range' },
     { key: 'strokeWidth', label: 'Stroke Weight', min: 0.5, max: 5, step: 0.25, type: 'range' },
+    { key: 'strokeRoughness', label: 'Stroke Roughness', min: 0, max: 20, step: 0.25, type: 'range' },
   ],
   contours: [
     { key: 'contourCount', label: 'Contour Iso-levels', min: 4, max: 30, step: 1, type: 'range' },
@@ -168,6 +178,7 @@ export const PARAM_DEFINITIONS: Record<string, ParamDef[]> = {
     { key: 'radialInfluence', label: 'Radial Falloff', min: 0, max: 1.0, step: 0.05, type: 'range' },
     { key: 'gridResolution', label: 'Grid Fidelity', min: 24, max: 60, step: 2, type: 'range' },
     { key: 'strokeWidth', label: 'Stroke Weight', min: 0.5, max: 5, step: 0.25, type: 'range' },
+    { key: 'strokeRoughness', label: 'Stroke Roughness', min: 0, max: 20, step: 0.25, type: 'range' },
   ],
   connections: [
     { key: 'nodeCount', label: 'Network Terminals', min: 6, max: 40, step: 1, type: 'range' },
@@ -185,5 +196,6 @@ export const PARAM_DEFINITIONS: Record<string, ParamDef[]> = {
     },
     { key: 'showLabels', label: 'Telemetry Glyphs', min: 0, max: 1, step: 1, type: 'boolean' },
     { key: 'strokeWidth', label: 'Stroke Weight', min: 0.5, max: 5, step: 0.25, type: 'range' },
+    { key: 'strokeRoughness', label: 'Stroke Roughness', min: 0, max: 20, step: 0.25, type: 'range' },
   ],
 };

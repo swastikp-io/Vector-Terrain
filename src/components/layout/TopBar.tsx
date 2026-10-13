@@ -8,7 +8,6 @@ import {
   Pause,
   RotateCcw,
   Download,
-  Dices,
 } from 'lucide-react';
 
 import { User } from '@supabase/supabase-js';
@@ -30,7 +29,6 @@ export const TopBar: React.FC<TopBarProps> = ({
     history,
     undo,
     redo,
-    rollSeed,
     randomizeAll,
     animation,
     toggleAnimation,
@@ -71,16 +69,6 @@ export const TopBar: React.FC<TopBarProps> = ({
             <Redo2 size={14} />
           </button>
         </div>
-
-        {/* New Variation (Roll Seed) */}
-        <button
-          onClick={rollSeed}
-          title="Generate New Seed Variation"
-          className="flex items-center gap-1.5 bg-[#f5f5f5] hover:bg-[#eeeeee] rounded px-2.5 py-1 text-xs text-black transition"
-        >
-          <Dices size={13} className="text-[#555555]" />
-          <span className="hidden sm:inline">New Variation</span>
-        </button>
 
         {/* Randomize All */}
         <button

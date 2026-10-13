@@ -5,6 +5,7 @@ import {
   PaletteConfig,
   GeneratorMode,
 } from '../core/types';
+import { applyStrokeRoughness, calculateGeometryBounds } from '../core/geometry';
 import { generateWaveforms } from './waveforms';
 import { generateLoops } from './loops';
 import { generateBranches } from './branches';
@@ -28,20 +29,40 @@ export function generateGeometry(
   palette: PaletteConfig,
   time = 0
 ): GeometryResult {
+  let result: GeometryResult;
+
   switch (config.mode) {
     case 'waveforms':
-      return generateWaveforms(config, seed, dimensions, palette, time);
+      result = generateWaveforms(config, seed, dimensions, palette, time);
+      break;
     case 'loops':
-      return generateLoops(config, seed, dimensions, palette, time);
+      result = generateLoops(config, seed, dimensions, palette, time);
+      break;
     case 'branches':
-      return generateBranches(config, seed, dimensions, palette, time);
+      result = generateBranches(config, seed, dimensions, palette, time);
+      break;
     case 'interference':
-      return generateInterference(config, seed, dimensions, palette, time);
+      result = generateInterference(config, seed, dimensions, palette, time);
+      break;
     case 'contours':
-      return generateContours(config, seed, dimensions, palette, time);
+      result = generateContours(config, seed, dimensions, palette, time);
+      break;
     case 'connections':
-      return generateConnections(config, seed, dimensions, palette, time);
+      result = generateConnections(config, seed, dimensions, palette, time);
+      break;
     default:
       throw new Error(`Unknown generator mode: ${(config as any).mode}`);
   }
+
+  const roughness = config.strokeRoughness ?? 0;
+  if (roughness > 0 && result.paths && result.paths.length > 0) {
+    result.paths = applyStrokeRoughness(result.paths, roughness, seed, dimensions);
+    result.stats.bounds = calculateGeometryBounds(result.paths);
+    result.stats.segmentCount = result.paths.reduce(
+      (acc, p) => acc + (p.commands?.length || 0),
+      0
+    );
+  }
+
+  return result;
 }

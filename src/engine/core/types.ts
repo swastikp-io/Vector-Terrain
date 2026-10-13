@@ -33,6 +33,7 @@ export interface VectorPath {
   commands: PathCommand[];
   strokeColor?: string;
   strokeWidth?: number;
+  strokeRoughness?: number;
   strokeOpacity?: number;
   fillColor?: string;
   fillOpacity?: number;
@@ -59,6 +60,7 @@ export type GeneratorMode =
 
 export interface BaseGeneratorConfig {
   mode: GeneratorMode;
+  strokeRoughness?: number;
 }
 
 // MODE 1: WAVEFORMS
@@ -75,6 +77,7 @@ export interface WaveformsConfig extends BaseGeneratorConfig {
   splitMergeStrength: number;
   transitionRegions: number;
   strokeWidth: number;
+  strokeRoughness: number;
 }
 
 // MODE 2: LOOPS
@@ -91,6 +94,7 @@ export interface LoopsConfig extends BaseGeneratorConfig {
   symmetry: boolean;
   connectConsecutive: boolean;
   strokeWidth: number;
+  strokeRoughness: number;
 }
 
 // MODE 3: BRANCHES
@@ -105,6 +109,7 @@ export interface BranchesConfig extends BaseGeneratorConfig {
   spacing: number;
   transitionSmoothness: number;
   strokeWidth: number;
+  strokeRoughness: number;
 }
 
 // MODE 4: INTERFERENCE
@@ -119,6 +124,7 @@ export interface InterferenceConfig extends BaseGeneratorConfig {
   scale: number;
   rotation: number;
   strokeWidth: number;
+  strokeRoughness: number;
 }
 
 // MODE 5: CONTOURS
@@ -133,6 +139,7 @@ export interface ContoursConfig extends BaseGeneratorConfig {
   radialInfluence: number;
   gridResolution: number;
   strokeWidth: number;
+  strokeRoughness: number;
 }
 
 // MODE 6: CONNECTIONS
@@ -146,6 +153,7 @@ export interface ConnectionsConfig extends BaseGeneratorConfig {
   nodeSize: number;
   layoutStyle: 'radial' | 'grid' | 'organic' | 'layered';
   strokeWidth: number;
+  strokeRoughness: number;
 }
 
 export type GeneratorConfig =

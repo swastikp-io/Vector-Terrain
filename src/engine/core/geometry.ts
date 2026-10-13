@@ -14,6 +14,7 @@ import {
   isSafePoint,
   clamp,
 } from './math';
+import { createRandom } from './random';
 
 /**
  * Evaluates a point on a cubic Bézier curve at parameter t in [0, 1].
@@ -624,4 +625,225 @@ export function clampPathToBounds(
       y: clamp(p.y, bounds.minY, bounds.maxY),
     })),
   };
+}
+
+/**
+ * Applies universal stroke roughness to vector paths by perturbing
+ * stroke paths across both the X and Y planes using multi-frequency
+ * gradient noise and tactile jitter.
+ *
+ * @param paths - Collection of VectorPaths to roughen
+ * @param roughness - Roughness factor (0 = smooth, > 0 = increasing roughness across X and Y)
+ * @param seed - Deterministic seed for reproducible roughness
+ * @param dimensions - Optional artboard dimensions for coordinate clamping
+ */
+export function applyStrokeRoughness(
+  paths: VectorPath[],
+  roughness: number,
+  seed = 42,
+  dimensions?: ArtboardDimensions
+): VectorPath[] {
+  if (roughness <= 0 || !paths || paths.length === 0) {
+    return paths;
+  }
+
+  const stepSize = 10;
+  const baseAmp = roughness * 1.5;
+
+  return paths.map((path, pathIdx) => {
+    if (!path.commands || path.commands.length === 0) {
+      return path;
+    }
+
+    const pathSeed = (Math.floor(seed) * 31 + pathIdx * 79 + 1013) & 0x7fffffff;
+    const rng = createRandom(pathSeed);
+
+    // Group commands into subpaths starting at each 'M'
+    const subpaths: PathCommand[][] = [];
+    let currentSubpath: PathCommand[] = [];
+
+    for (const cmd of path.commands) {
+      if (cmd.type === 'M') {
+        if (currentSubpath.length > 0) {
+          subpaths.push(currentSubpath);
+        }
+        currentSubpath = [cmd];
+      } else {
+        currentSubpath.push(cmd);
+      }
+    }
+    if (currentSubpath.length > 0) {
+      subpaths.push(currentSubpath);
+    }
+
+    const roughenedCommands: PathCommand[] = [];
+
+    for (let sIdx = 0; sIdx < subpaths.length; sIdx++) {
+      const sp = subpaths[sIdx];
+      const startCmd = sp[0];
+      if (startCmd.type !== 'M') continue;
+
+      let curX = startCmd.x;
+      let curY = startCmd.y;
+      const sampledPoints: Point2D[] = [{ x: curX, y: curY }];
+      let isClosed = Boolean(path.closed);
+
+      for (let i = 1; i < sp.length; i++) {
+        const cmd = sp[i];
+        switch (cmd.type) {
+          case 'L': {
+            const d = vecDist({ x: curX, y: curY }, { x: cmd.x, y: cmd.y });
+            const steps = Math.max(1, Math.round(d / stepSize));
+            for (let step = 1; step <= steps; step++) {
+              const t = step / steps;
+              sampledPoints.push({
+                x: curX + (cmd.x - curX) * t,
+                y: curY + (cmd.y - curY) * t,
+              });
+            }
+            curX = cmd.x;
+            curY = cmd.y;
+            break;
+          }
+          case 'C': {
+            const curve: CubicBezier = {
+              p0: { x: curX, y: curY },
+              p1: { x: cmd.cp1x, y: cmd.cp1y },
+              p2: { x: cmd.cp2x, y: cmd.cp2y },
+              p3: { x: cmd.x, y: cmd.y },
+            };
+            const approxLen =
+              vecDist(curve.p0, curve.p1) +
+              vecDist(curve.p1, curve.p2) +
+              vecDist(curve.p2, curve.p3);
+            const steps = Math.max(3, Math.round(approxLen / stepSize));
+            for (let step = 1; step <= steps; step++) {
+              const t = step / steps;
+              sampledPoints.push(evaluateCubicBezier(curve, t));
+            }
+            curX = cmd.x;
+            curY = cmd.y;
+            break;
+          }
+          case 'Q': {
+            const p0 = { x: curX, y: curY };
+            const pc = { x: cmd.cpx, y: cmd.cpy };
+            const p1 = { x: cmd.x, y: cmd.y };
+            const approxLen = vecDist(p0, pc) + vecDist(pc, p1);
+            const steps = Math.max(3, Math.round(approxLen / stepSize));
+            for (let step = 1; step <= steps; step++) {
+              const t = step / steps;
+              const mt = 1 - t;
+              sampledPoints.push({
+                x: mt * mt * p0.x + 2 * mt * t * pc.x + t * t * p1.x,
+                y: mt * mt * p0.y + 2 * mt * t * pc.y + t * t * p1.y,
+              });
+            }
+            curX = cmd.x;
+            curY = cmd.y;
+            break;
+          }
+          case 'Z': {
+            isClosed = true;
+            break;
+          }
+        }
+      }
+
+      if (sampledPoints.length < 2) {
+        roughenedCommands.push(...sp);
+        continue;
+      }
+
+      const firstPt = sampledPoints[0];
+      const lastPt = sampledPoints[sampledPoints.length - 1];
+      if (vecDist(firstPt, lastPt) < 2) {
+        isClosed = true;
+      }
+
+      // Approximate total path length to gracefully scale tiny features (e.g. terminals, dots)
+      let totalLen = 0;
+      for (let i = 1; i < sampledPoints.length; i++) {
+        totalLen += vecDist(sampledPoints[i - 1], sampledPoints[i]);
+      }
+      const scaleLimit = Math.min(1, Math.max(0.2, totalLen / 45));
+      const effectiveAmp = baseAmp * scaleLimit;
+
+      const offX = ((pathSeed * 0.17) % 500) + sIdx * 37.1;
+      const offY = ((pathSeed * 0.31) % 500) + sIdx * 53.7 + 250;
+
+      const f1 = 0.015;
+      const f2 = 0.055;
+      const f3 = 0.14;
+
+      const nPts = sampledPoints.length;
+      const displaced: Point2D[] = [];
+
+      let firstDx = 0;
+      let firstDy = 0;
+
+      for (let i = 0; i < nPts; i++) {
+        const pt = sampledPoints[i];
+
+        if (isClosed && i === nPts - 1) {
+          displaced.push({
+            x: pt.x + firstDx,
+            y: pt.y + firstDy,
+          });
+          continue;
+        }
+
+        // 2D noise across X plane
+        const nx1 = rng.noise2D(pt.x * f1 + offX, pt.y * f1 + offX);
+        const nx2 = rng.noise2D(pt.x * f2 + offX + 71.3, pt.y * f2 + offX + 43.1);
+        const nx3 = rng.noise2D(pt.x * f3 + offX + 131.7, pt.y * f3 + offX + 97.9);
+        const noiseX = nx1 * 0.52 + nx2 * 0.33 + nx3 * 0.15;
+
+        // 2D noise across Y plane
+        const ny1 = rng.noise2D(pt.x * f1 + offY, pt.y * f1 + offY);
+        const ny2 = rng.noise2D(pt.x * f2 + offY + 83.7, pt.y * f2 + offY + 59.3);
+        const ny3 = rng.noise2D(pt.x * f3 + offY + 167.1, pt.y * f3 + offY + 119.5);
+        const noiseY = ny1 * 0.52 + ny2 * 0.33 + ny3 * 0.15;
+
+        // Deterministic high-frequency tactile jitter across X and Y
+        const jitterAngle = i * 2.39996 + pathSeed;
+        const jitterX = Math.sin(jitterAngle * 5.17) * 0.22;
+        const jitterY = Math.cos(jitterAngle * 6.73) * 0.22;
+
+        let dx = (noiseX + jitterX) * effectiveAmp;
+        let dy = (noiseY + jitterY) * effectiveAmp;
+
+        if (i === 0) {
+          firstDx = dx;
+          firstDy = dy;
+        }
+
+        let newX = pt.x + dx;
+        let newY = pt.y + dy;
+
+        if (dimensions) {
+          newX = clamp(newX, 0, dimensions.width);
+          newY = clamp(newY, 0, dimensions.height);
+        }
+
+        displaced.push({ x: newX, y: newY });
+      }
+
+      if (displaced.length === 2) {
+        roughenedCommands.push(
+          { type: 'M', x: displaced[0].x, y: displaced[0].y },
+          { type: 'L', x: displaced[1].x, y: displaced[1].y }
+        );
+      } else {
+        const converted = catmullRomToCommands(displaced, isClosed, 0.75);
+        roughenedCommands.push(...converted);
+      }
+    }
+
+    return {
+      ...path,
+      commands: roughenedCommands,
+      strokeRoughness: roughness,
+    };
+  });
 }
