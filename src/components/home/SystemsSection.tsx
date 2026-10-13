@@ -168,10 +168,6 @@ export const SystemsSection: React.FC<SystemsSectionProps> = ({ onSelectSystem }
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div>
-            <div className="font-mono text-xs uppercase tracking-widest text-[#666666] mb-3 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-black" />
-              02 / GENERATIVE SYSTEMS
-            </div>
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-light tracking-tight font-display text-black">
               Different rules.<br />
               <span className="text-[#888888]">Different worlds.</span>

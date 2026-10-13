@@ -57,10 +57,6 @@ export const EditorialSection: React.FC<EditorialSectionProps> = ({ onOpenPlaygr
                   className="stroke-[2.5] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                 />
               </button>
-
-              <div className="text-xs font-mono text-[#777777] tracking-wide">
-                <span>EST. 2026 // VECTOR LAB</span>
-              </div>
             </div>
           </div>
 
